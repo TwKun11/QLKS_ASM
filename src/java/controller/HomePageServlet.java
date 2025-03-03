@@ -4,6 +4,8 @@
  */
 package controller;
 
+import dao.DAOKhachSan;
+import dao.DAOLoaiKhachSan;
 import dao.DAOThanhPho;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,6 +16,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
+import model.KhachSan;
+import model.LoaiKhachSan;
 import model.ThanhPho;
 
 /**
@@ -80,6 +84,10 @@ public class HomePageServlet extends HttpServlet {
         // Chuyển hướng đến trang homePage.jsp
         List<ThanhPho> cityList = DAOThanhPho.getAll();
         request.setAttribute("listThanhPho", cityList);
+        List<LoaiKhachSan> categoriesKhachSans = DAOLoaiKhachSan.getAll();
+        request.setAttribute("listLoaiKhachSan", categoriesKhachSans);
+        List<KhachSan> khachSanNoiBac = DAOKhachSan.getKhachSanGoodRate();
+        request.setAttribute("khachSanNoiBac", khachSanNoiBac);
         request.getRequestDispatcher("home.jsp").forward(request, response);
     }
 

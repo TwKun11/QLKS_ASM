@@ -24,6 +24,20 @@ public class KhachSan implements Serializable  {
     public KhachSan() {
     }
 
+    public KhachSan(int id, String ten, String diaChi, String soDienThoai, int cachTrungTam, String moTa, boolean giapBien, int danhGia, int buaAn, int idThanhPho, int idLoaiKhachSan) {
+        this.id = id;
+        this.ten = ten;
+        this.diaChi = diaChi;
+        this.soDienThoai = soDienThoai;
+        this.cachTrungTam = cachTrungTam;
+        this.moTa = moTa;
+        this.giapBien = giapBien;
+        this.danhGia = danhGia;
+        this.buaAn = buaAn;
+        this.idThanhPho = idThanhPho;
+        this.idLoaiKhachSan = idLoaiKhachSan;
+    }
+
     public KhachSan(int id, String ten, String diaChi, String soDienThoai, int cachTrungTam, String moTa, boolean giapBien, int danhGia, int buaAn, int idThanhPho, String tenThanhPho, int idLoaiKhachSan, String tenLoaiKhachSan, String urlHinhAnhThanhPho) {
         this.id = id;
         this.ten = ten;

@@ -1,10 +1,7 @@
-<%-- 
-    Document   : header
-    Created on : Feb 23, 2025, 9:28:49 PM
-    Author     : Admin
---%>
-
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%
+    String currentPage = request.getRequestURI();
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -43,6 +40,7 @@
             font-weight: bold;
             transition: color 0.3s ease-in-out;
             position: relative;
+            padding: 5px 10px;
         }
         .nav a::after {
             content: "";
@@ -55,10 +53,10 @@
             bottom: -5px;
             left: 0;
         }
-        .nav a:hover {
+        .nav a:hover, .nav a.active {
             color: #00aaff;
         }
-        .nav a:hover::after {
+        .nav a:hover::after, .nav a.active::after {
             width: 100%;
         }
         .user {
@@ -86,11 +84,11 @@
             <img src="Content/Images/Logo.png" alt="Nice Dream Hotel">
         </div>
         <div class="nav">
-            <a href="index.jsp"><b>Trang chủ</b></a>
-            <a href="hotels.jsp">Khách sạn</a>
-            <a href="profile.jsp">Cá nhân</a>
-            <a href="news.jsp">Tin tức</a>
-            <a href="contact.jsp">Liên hệ</a>
+            <a href="${pageContext.request.contextPath}/home" class="<%= currentPage.contains("/home") ? "active" : "" %>">Trang chủ</a>
+            <a href="${pageContext.request.contextPath}/khachsan" class="<%= currentPage.contains("/khachsan") ? "active" : "" %>">Khách sạn</a>
+            <a href="${pageContext.request.contextPath}/profile.jsp" class="<%= currentPage.contains("profile.jsp") ? "active" : "" %>">Cá nhân</a>
+            <a href="${pageContext.request.contextPath}/news.jsp" class="<%= currentPage.contains("news.jsp") ? "active" : "" %>">Tin tức</a>
+            <a href="${pageContext.request.contextPath}/contact.jsp" class="<%= currentPage.contains("contact.jsp") ? "active" : "" %>">Liên hệ</a>
         </div>
         <div class="user">
             <a href="login.jsp">Đăng Nhập</a>
