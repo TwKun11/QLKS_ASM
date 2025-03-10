@@ -2,9 +2,8 @@ package model;
 
 import java.io.Serializable;
 
-public class LichSu implements Serializable {
+public class LichSu  {
 
-    private static final long serialVersionUID = 54353121L;
 
     int id;
     String tenPhong;

@@ -109,7 +109,7 @@ public class KhachSanServlet extends HttpServlet {
             request.setAttribute("giapBien", giapBien);
             request.setAttribute("idThanhPho", idThanhPho); // Thêm thuộc tính idThanhPho
 
-            request.getRequestDispatcher("/Page/KhachSanPage.jsp").forward(request, response);
+            request.getRequestDispatcher("/pages/khachsan.jsp").forward(request, response);
 
         } catch (SQLException e) {
             e.printStackTrace();

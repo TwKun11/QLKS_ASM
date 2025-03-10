@@ -29,12 +29,7 @@ public class ThanhPho {
         this.urlHinhAnh = tp.urlHinhAnh;
     }
 
-    public void reload(int id, String ten, String moTa, String urlHinhAnh) {
-        this.id = id;
-        this.ten = ten;
-        this.moTa = moTa;
-        this.urlHinhAnh = urlHinhAnh;
-    }
+
 
     public int getId() {
         return id;

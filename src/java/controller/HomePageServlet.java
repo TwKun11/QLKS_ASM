@@ -88,7 +88,7 @@ public class HomePageServlet extends HttpServlet {
         request.setAttribute("listLoaiKhachSan", categoriesKhachSans);
         List<KhachSan> khachSanNoiBac = DAOKhachSan.getKhachSanGoodRate();
         request.setAttribute("khachSanNoiBac", khachSanNoiBac);
-        request.getRequestDispatcher("home.jsp").forward(request, response);
+        request.getRequestDispatcher("/pages/home.jsp").forward(request, response);
     }
 
     private void showErrorPage(HttpServletRequest request, HttpServletResponse response)

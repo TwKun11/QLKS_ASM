@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 public class LoaiKhachSan implements Serializable {
 
-    private static final long serialVersionUID = 543213541L;
 
     int id;
     String ten;
@@ -30,12 +29,7 @@ public class LoaiKhachSan implements Serializable {
         this.urlHinhAnh = tp.urlHinhAnh;
     }
 
-    public void reload(int id, String ten, String moTa, String urlHinhAnh) {
-        this.id = id;
-        this.ten = ten;
-        this.moTa = moTa;
-        this.urlHinhAnh = urlHinhAnh;
-    }
+
 
     public int getId() {
         return id;

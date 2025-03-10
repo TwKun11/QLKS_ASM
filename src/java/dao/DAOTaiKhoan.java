@@ -3,6 +3,7 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import model.TaiKhoan;
@@ -109,5 +110,30 @@ public class DAOTaiKhoan {
         }
         return true;
     }
-
+ public static TaiKhoan getByTenTaiKhoan(String TenTaiKhoan) throws SQLException {
+        TaiKhoan tmp = null;
+        Connection con = null;
+        try {
+            con = SQLConnection.getConnection();
+            PreparedStatement stmt = con.prepareStatement("SELECT * FROM TaiKhoan WHERE TenTaiKhoan=?");
+            stmt.setString(1, TenTaiKhoan);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                tmp = new TaiKhoan();
+                tmp.setTenTaiKhoan(rs.getString(1));
+                tmp.setMatKhau(rs.getString(2));
+                tmp.setHoTen(rs.getString(3));
+                tmp.setGioiTinh(rs.getBoolean(4));
+                tmp.setSoDienThoai(rs.getString(5));
+                tmp.setEmail(rs.getString(6));
+                tmp.setIsAdmin(rs.getBoolean(7));
+            }
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            if (con != null) con.close();
+        }
+        return tmp;
+    }
+ 
 }

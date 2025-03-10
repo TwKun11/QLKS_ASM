@@ -2,9 +2,8 @@ package model;
 
 import java.io.Serializable;
 
-public class Phong implements Serializable {
+public class Phong  {
 
-    private static final long serialVersionUID = 1453432L;
     
     int id;
     String ten;
@@ -15,7 +14,15 @@ public class Phong implements Serializable {
     int loaiGiuong;
     int idKhachSan;
     String tenKhachSan;
+    KhachSan khachSan;
 
+    public KhachSan getKhachSan() {
+        return khachSan;
+    }
+
+    public void setKhachSan(KhachSan khachSan) {
+        this.khachSan = khachSan;
+    }
     public Phong() {
     }
 
@@ -42,18 +49,7 @@ public class Phong implements Serializable {
         this.idKhachSan = p.idKhachSan;
         this.tenKhachSan = p.tenKhachSan;
     }
-    
-    public void reload(int id, String ten, int dienTich, int giaThue, String tienNghi, String moTa, int loaiGiuong, int idKhachSan, String tenKhachSan) {
-        this.id = id;
-        this.ten = ten;
-        this.dienTich = dienTich;
-        this.giaThue = giaThue;
-        this.tienNghi = tienNghi;
-        this.moTa = moTa;
-        this.loaiGiuong = loaiGiuong;
-        this.idKhachSan = idKhachSan;
-        this.tenKhachSan = tenKhachSan;
-    }
+
 
     public int getId() {
         return id;

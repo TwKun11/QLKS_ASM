@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import model.KhachSan;
+import model.Phong;
 
 public class DAOKhachSan {
 
@@ -257,4 +258,91 @@ public class DAOKhachSan {
         return 0;
     }
 
+    public static KhachSan getKhachSanById(int id) {
+        KhachSan khachSan = null;
+        try {
+            con = SQLConnection.getConnection();
+
+            String sql = "SELECT "
+                    + "K.Id AS KhachSanId, "
+                    + "K.Ten AS TenKhachSan, "
+                    + "K.DiaChi AS DiaChi, "
+                    + "K.SoDienThoai AS SoDienThoai, "
+                    + "K.CachTrungTam AS CachTrungTam, "
+                    + "K.MoTa AS MoTaKhachSan, "
+                    + "K.GiapBien AS GiapBien, "
+                    + "K.DanhGia AS DanhGia, "
+                    + "K.BuaAn AS BuaAn, "
+                    + "T.Ten AS TenThanhPho, "
+                    + "L.Ten AS TenLoaiKhachSan, "
+                    + "T.UrlHinhAnh AS UrlHinhAnhThanhPho, "
+                    + "P.Id AS PhongId, "
+                    + "P.Ten AS TenPhong, "
+                    + "P.DienTich AS DienTichPhong, "
+                    + "P.GiaThue AS GiaThuePhong, "
+                    + "P.TienNghi AS TienNghiPhong, "
+                    + "P.MoTa AS MoTaPhong, "
+                    + "P.LoaiGiuong AS LoaiGiuong "
+                    + "FROM KhachSan K "
+                    + "JOIN ThanhPho T ON K.IdThanhPho = T.Id "
+                    + "JOIN LoaiKhachSan L ON K.IdLoaiKhachSan = L.Id "
+                    + "LEFT JOIN Phong P ON K.Id = P.IdKhachSan "
+                    + "WHERE K.Id = ?";
+
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setInt(1, id);
+
+            ResultSet rs = stmt.executeQuery();
+            List<Phong> phongList = new ArrayList<>();
+
+            while (rs.next()) {
+                if (khachSan == null) {
+                    // Khởi tạo đối tượng KhachSan nếu chưa có
+                    khachSan = new KhachSan();
+                    khachSan.setId(rs.getInt("KhachSanId"));
+                    khachSan.setTen(rs.getString("TenKhachSan"));
+                    khachSan.setDiaChi(rs.getString("DiaChi"));
+                    khachSan.setSoDienThoai(rs.getString("SoDienThoai"));
+                    khachSan.setCachTrungTam(rs.getInt("CachTrungTam"));
+                    khachSan.setMoTa(rs.getString("MoTaKhachSan"));
+                    khachSan.setGiapBien(rs.getBoolean("GiapBien"));
+                    khachSan.setDanhGia(rs.getInt("DanhGia"));
+                    khachSan.setBuaAn(rs.getInt("BuaAn"));
+                    khachSan.setTenThanhPho(rs.getString("TenThanhPho"));
+                    khachSan.setTenLoaiKhachSan(rs.getString("TenLoaiKhachSan"));
+                    khachSan.setUrlHinhAnhThanhPho(rs.getString("UrlHinhAnhThanhPho"));
+
+                    // Log thông tin khách sạn
+                }
+
+                // Lấy thông tin phòng (nếu có)
+                int phongId = rs.getInt("PhongId");
+                if (phongId != 0) { // Kiểm tra xem có dữ liệu phòng không
+                    Phong phong = new Phong();
+                    phong.setId(phongId);
+                    phong.setTen(rs.getString("TenPhong"));
+                    phong.setDienTich((int) rs.getDouble("DienTichPhong"));
+                    phong.setGiaThue((int) rs.getDouble("GiaThuePhong"));
+                    phong.setTienNghi(rs.getString("TienNghiPhong"));
+                    phong.setMoTa(rs.getString("MoTaPhong"));
+                    phong.setLoaiGiuong(rs.getInt("LoaiGiuong"));
+                    phongList.add(phong);
+
+                    // Log thông tin phòng
+                }
+            }
+
+            // Log số lượng phòng
+
+            // Gán danh sách phòng vào khách sạn
+            if (khachSan != null) {
+                khachSan.setPhongList(phongList);
+            }
+
+            con.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return khachSan; // Trả về đối tượng KhachSan nếu tìm thấy, hoặc null nếu không tìm thấy
+    }
 }

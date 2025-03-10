@@ -5,6 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import model.KhachSan;
 import model.Phong;
 
 public class DAOPhong {
@@ -92,5 +95,52 @@ public class DAOPhong {
         }
         return true;
     }
-    
+
+    public static List<Phong> layPhongTrong(int idKhachSan, Date ngayDen, Date ngayTra) {
+        List<Phong> danhSachPhong = new ArrayList<>();
+        try {
+            Connection con = SQLConnection.getConnection();
+            String sql = "SELECT p.*, ks.Ten AS TenKhachSan, ks.DiaChi, ks.SoDienThoai, ks.DanhGia "
+                    + "FROM Phong p JOIN KhachSan ks ON p.IdKhachSan = ks.Id "
+                    + "WHERE p.IdKhachSan = ? AND p.Id NOT IN ("
+                    + "    SELECT dp.IdPhong FROM DatPhong dp "
+                    + "    WHERE dp.NgayDen < ? AND dp.NgayTra > ? AND dp.DaHuy = 0)";
+
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setInt(1, idKhachSan);
+            stmt.setDate(2, new java.sql.Date(ngayTra.getTime())); // Ngày checkout
+            stmt.setDate(3, new java.sql.Date(ngayDen.getTime())); // Ngày checkin
+
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Phong phong = new Phong();
+                phong.setId(rs.getInt("Id"));
+                phong.setTen(rs.getString("Ten"));
+                phong.setDienTich(rs.getInt("DienTich"));
+                phong.setGiaThue(rs.getInt("GiaThue"));
+                phong.setTienNghi(rs.getString("TienNghi"));
+                phong.setMoTa(rs.getString("MoTa"));
+                phong.setLoaiGiuong(rs.getInt("LoaiGiuong"));
+
+                // Gán thông tin khách sạn
+                KhachSan khachSan = new KhachSan();
+                khachSan.setId(idKhachSan);
+                khachSan.setTen(rs.getString("TenKhachSan"));
+                khachSan.setDiaChi(rs.getString("DiaChi"));
+                khachSan.setSoDienThoai(rs.getString("SoDienThoai"));
+                khachSan.setDanhGia(rs.getInt("DanhGia"));
+                phong.setKhachSan(khachSan);
+                danhSachPhong.add(phong);
+            }
+            con.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return danhSachPhong;
+    }
+
+    public static Phong getPhongById(int idPhong) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
 }

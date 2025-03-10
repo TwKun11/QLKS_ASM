@@ -3,9 +3,8 @@ package model;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class BuaAn implements Serializable {
+public class BuaAn  {
 
-    private static final long serialVersionUID = 1124521354L;
 
     public static ArrayList<BuaAn> listBuaAn = new ArrayList() {
         {

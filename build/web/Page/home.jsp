@@ -305,36 +305,36 @@
                             <div class="carousel-item ${loop.index == 0 ? 'active' : ''}">
                                 <div class="hotel-container">
                                 </c:if>
-
                                 <!-- Thẻ khách sạn -->
                                 <div class="hotel-card">
-                                    <div class="hotel-image">
-                                        <img src="Content/Images/KhachSan/${ks.id}.jpg" alt="${ks.ten}">
-                                        <div class="rating-badge">${ks.danhGia}</div>
-                                    </div>
-                                    <div class="hotel-info">
-                                        <h2>${ks.ten}</h2>
-                                        <div class="stars">
-                                            <c:forEach begin="1" end="${ks.danhGia}">
-                                                <span>⭐</span>
-                                            </c:forEach>
+                                    <a href="${pageContext.request.contextPath}/datphong?id=${ks.id}" class="city-link">
+                                        <div class="hotel-image">
+                                            <img src="Content/Images/KhachSan/${ks.id}.jpg" alt="${ks.ten}">
+                                            <div class="rating-badge">${ks.danhGia}</div>
                                         </div>
-                                        <p class="location">📍 ${ks.tenThanhPho}</p>
-                                        <c:if test="${ks.giapBien}">
-                                            <p class="highlight">🌊 Giáp biển</p>
-                                        </c:if>
-                                        <p class="distance">🚕 Cách trung tâm: ${ks.cachTrungTam} km</p>
-                                        <p class="meal">🍽 Bữa ăn: 
-                                            <c:choose>
-                                                <c:when test="${ks.buaAn == 1}">Chỉ phòng</c:when>
-                                                <c:when test="${ks.buaAn == 2}">Bao ăn sáng</c:when>
-                                                <c:when test="${ks.buaAn == 3}">Full board</c:when>
-                                                <c:otherwise>Không rõ</c:otherwise>
-                                            </c:choose>
-                                        </p>
-                                    </div>
+                                        <div class="hotel-info">
+                                            <h2>${ks.ten}</h2>
+                                            <div class="stars">
+                                                <c:forEach begin="1" end="${ks.danhGia}">
+                                                    <span>⭐</span>
+                                                </c:forEach>
+                                            </div>
+                                            <p class="location">📍 ${ks.tenThanhPho}</p>
+                                            <c:if test="${ks.giapBien}">
+                                                <p class="highlight">🌊 Giáp biển</p>
+                                            </c:if>
+                                            <p class="distance">🚕 Cách trung tâm: ${ks.cachTrungTam} km</p>
+                                            <p class="meal">🍽 Bữa ăn: 
+                                                <c:choose>
+                                                    <c:when test="${ks.buaAn == 1}">Chỉ phòng</c:when>
+                                                    <c:when test="${ks.buaAn == 2}">Bao ăn sáng</c:when>
+                                                    <c:when test="${ks.buaAn == 3}">Full board</c:when>
+                                                    <c:otherwise>Không rõ</c:otherwise>
+                                                </c:choose>
+                                            </p>
+                                        </div>
                                 </div>
-
+                                </a>
                                 <c:if test="${loop.index % 4 == 3 or loop.last}">
                                 </div>
                             </div>

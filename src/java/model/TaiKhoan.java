@@ -2,9 +2,8 @@ package model;
 
 import java.io.Serializable;
 
-public class TaiKhoan implements Serializable {
+public class TaiKhoan  {
 
-    private static final long serialVersionUID = 45312311L;
     
     String tenTaiKhoan;
     String matKhau;
@@ -13,8 +12,19 @@ public class TaiKhoan implements Serializable {
     String soDienThoai;
     String email;
     boolean isAdmin;
+    int Role;
 
     public TaiKhoan() {
+    }
+
+    public TaiKhoan(String tenTaiKhoan, String matKhau, String hoTen, boolean gioiTinh, String soDienThoai, String email, int Role) {
+        this.tenTaiKhoan = tenTaiKhoan;
+        this.matKhau = matKhau;
+        this.hoTen = hoTen;
+        this.gioiTinh = gioiTinh;
+        this.soDienThoai = soDienThoai;
+        this.email = email;
+        this.Role = Role;
     }
 
     public TaiKhoan(String tenTaiKhoan, String matKhau, String hoTen, boolean gioiTinh, String soDienThoai, String email, boolean isAdmin) {
@@ -36,16 +46,7 @@ public class TaiKhoan implements Serializable {
         this.email = tk.email;
         this.isAdmin = tk.isAdmin;
     }
-    
-    public void reload(String tenTaiKhoan, String matKhau, String hoTen, boolean gioiTinh, String soDienThoai, String email, boolean isAdmin) {
-        this.tenTaiKhoan = tenTaiKhoan;
-        this.matKhau = matKhau;
-        this.hoTen = hoTen;
-        this.gioiTinh = gioiTinh;
-        this.soDienThoai = soDienThoai;
-        this.email = email;
-        this.isAdmin = isAdmin;
-    }
+
 
     public String getTenTaiKhoan() {
         return tenTaiKhoan;

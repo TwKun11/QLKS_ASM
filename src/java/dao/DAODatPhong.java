@@ -61,6 +61,26 @@ public class DAODatPhong {
         return true;
     }
 
+    public static boolean checkRoomAvailability(int idPhong, String ngayDen, String ngayTra) {
+        try {
+            con = SQLConnection.getConnection();
+            PreparedStatement stmt = con.prepareStatement(
+                    "SELECT COUNT(*) FROM DatPhong WHERE IdPhong = ? AND ? < NgayTra AND ? > NgayDen AND DaHuy = 0");
+            stmt.setInt(1, idPhong);
+            stmt.setString(2, ngayDen);
+            stmt.setString(3, ngayTra);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next() && rs.getInt(1) > 0) {
+                return false; // Phòng đã được đặt
+            }
+            con.close();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public static boolean update(int id) {
         try {
             con = SQLConnection.getConnection();
@@ -77,11 +97,11 @@ public class DAODatPhong {
 
     public static boolean delete(int id) {
         try {
-            
+
         } catch (Exception e) {
             return false;
         }
         return true;
     }
-    
+
 }
