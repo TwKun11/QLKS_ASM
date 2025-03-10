@@ -169,7 +169,7 @@
                     <img src="../Content/Images/login.jpg" alt="alt"/>
                 </div>
                 <div class="row2">
-                    <form action="LoginServlet" method="post" autocomplete="off">
+                    <form action="${pageContext.request.contextPath}/LoginServlet" method="post" autocomplete="off">
                         <h2>Đăng nhập</h2>
                         <input type="text" name="username" placeholder="Tên đăng nhập" value="<%= savedUsername %>" autocomplete="new-username" required> <br/>
                         <input type="password" name="password" placeholder="Mật khẩu" value="<%= savedPassword %>" autocomplete="new-password" required> <br/>
