@@ -7,20 +7,20 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Chi Tiết Khách Sạn</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
         <style>
             * { margin: 0; padding: 0; box-sizing: border-box; }
             body {
-                font-family: 'Roboto', Arial, sans-serif;
-                background-color: #121212;
-                color: #ffffff;
+                font-family: 'Poppins', Arial, sans-serif;
+                background-color: #FFF8E1; /* Trắng kem làm nền */
+                color: #333; /* Màu chữ tối để dễ đọc */
                 line-height: 1.6;
                 overflow-x: hidden;
             }
             header {
-                background-color: #1e1e1e;
+                background-color: #D32F2F; /* Đỏ đậm cho header */
                 position: relative;
                 z-index: 10;
             }
@@ -35,168 +35,169 @@
                 animation: fadeIn 0.5s ease-in;
             }
             h1 {
-                font-size: 32px;
+                font-size: 2rem; /* 32px */
                 text-align: center;
-                margin: 40px 0;
+                margin: 2.5rem 0;
+                color: #D32F2F; /* Đỏ đậm cho tiêu đề chính */
                 animation: slideInFromTop 0.8s ease-out;
             }
             .search-overlay {
                 background-color: #ffffff;
                 border-radius: 10px;
-                box-shadow: 0 6px 25px rgba(255, 255, 255, 0.1);
-                padding: 30px;
+                box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+                padding: 1.875rem; /* 30px */
                 position: sticky;
-                top: 20px;
+                top: 1.25rem; /* 20px */
                 z-index: 10;
-                max-width: 1000px;
-                margin: 20px auto;
+                max-width: 62.5rem; /* 1000px */
+                margin: 1.25rem auto; /* 20px */
                 animation: slideInFromTop 0.6s ease-out;
             }
             .search-overlay.static { position: static; box-shadow: none; }
             .search-overlay form {
                 display: flex;
-                gap: 25px;
+                gap: 1.5625rem; /* 25px */
                 align-items: center;
                 justify-content: center;
                 flex-wrap: wrap;
             }
-            .search-overlay label { font-size: 16px; font-weight: 500; color: #333; }
+            .search-overlay label { font-size: 1rem; /* 16px */ font-weight: 500; color: #333; }
             .search-overlay input[type="date"] {
-                padding: 12px;
+                padding: 0.75rem; /* 12px */
                 border: 1px solid #ccc;
                 border-radius: 6px;
-                font-size: 16px;
-                width: 220px;
-                background-color: #f8f9fa;
+                font-size: 1rem; /* 16px */
+                width: 13.75rem; /* 220px */
+                background-color: #FFF8E1; /* Trắng kem */
                 color: #333;
                 transition: border-color 0.3s ease;
             }
-            .search-overlay input[type="date"]:focus { border-color: #0d6efd; outline: none; }
+            .search-overlay input[type="date"]:focus { border-color: #D32F2F; outline: none; }
             .search-overlay button {
-                background-color: #0d6efd;
+                background-color: #D32F2F; /* Đỏ đậm */
                 color: #fff;
-                padding: 12px 35px;
+                padding: 0.75rem 2.1875rem; /* 12px 35px */
                 border: none;
                 border-radius: 6px;
-                font-size: 16px;
+                font-size: 1rem; /* 16px */
                 cursor: pointer;
                 transition: background-color 0.3s ease, transform 0.2s ease;
             }
-            .search-overlay button:hover { background-color: #0056b3; transform: translateY(-2px); }
+            .search-overlay button:hover { background-color: #B71C1C; /* Đỏ đậm hơn */ transform: translateY(-2px); }
 
             /* Layout chính */
             .main-container {
                 display: flex;
-                max-width: 1200px;
-                margin: 40px auto;
-                gap: 20px;
+                max-width: 75rem; /* 1200px */
+                margin: 2.5rem auto; /* 40px */
+                gap: 1.25rem; /* 20px */
             }
-            .left-section { flex: 1 1 30%; display: flex; flex-direction: column; gap: 20px; }
-            .right-section { flex: 1 1 70%; display: flex; flex-direction: column; gap: 20px; }
+            .left-section { flex: 1 1 30%; display: flex; flex-direction: column; gap: 1.25rem; /* 20px */ }
+            .right-section { flex: 1 1 70%; display: flex; flex-direction: column; gap: 1.25rem; /* 20px */ }
 
             /* Bản đồ nhỏ */
             .map-section { flex: 1; }
-            #map { height: 200px; width: 100%; border-radius: 10px; box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1); background-color: #333; }
+            #map { height: 12.5rem; /* 200px */ width: 100%; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); background-color: #333; }
             .rating-section {
-                margin-top: 15px;
-                background-color: #222;
-                padding: 15px;
+                margin-top: 0.9375rem; /* 15px */
+                background-color: #fff; /* Trắng */
+                padding: 0.9375rem; /* 15px */
                 border-radius: 10px;
-                box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
                 text-align: center;
             }
-            .rating-section p { margin: 0; font-size: 16px; color: #ccc; display: flex; justify-content: center; align-items: center; gap: 10px; }
-            .rating-section p i { color: #0d6efd; }
-            .rating-section p span.stars { color: gold; }
+            .rating-section p { margin: 0; font-size: 1rem; /* 16px */ color: #666; display: flex; justify-content: center; align-items: center; gap: 0.625rem; /* 10px */ }
+            .rating-section p i { color: #D32F2F; /* Đỏ đậm */ }
+            .rating-section p span.stars { color: #FFD700; /* Vàng */ }
 
             /* Thông tin khách sạn */
             .hotel-info {
-                background-color: #222;
+                background-color: #fff; /* Trắng */
                 border-radius: 10px;
-                box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
-                padding: 30px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+                padding: 1.875rem; /* 30px */
                 animation: fadeInUp 0.8s ease-out;
             }
-            .hotel-info img { width: 100%; max-height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 15px; }
-            .hotel-info h2 { font-size: 28px; color: #0d6efd; margin-bottom: 15px; }
-            .hotel-info p { font-size: 16px; margin: 10px 0; display: flex; align-items: center; gap: 10px; color: #ccc; }
-            .hotel-info p strong { color: #ffffff; min-width: 120px; }
-            .hotel-info p i { color: #0d6efd; }
+            .hotel-info img { width: 100%; max-height: 12.5rem; /* 200px */ object-fit: cover; border-radius: 8px; margin-bottom: 0.9375rem; /* 15px */ }
+            .hotel-info h2 { font-size: 1.75rem; /* 28px */ color: #D32F2F; /* Đỏ đậm */ margin-bottom: 0.9375rem; /* 15px */ }
+            .hotel-info p { font-size: 1rem; /* 16px */ margin: 0.625rem 0; /* 10px */ display: flex; align-items: center; gap: 0.625rem; /* 10px */ color: #666; }
+            .hotel-info p strong { color: #333; min-width: 7.5rem; /* 120px */ }
+            .hotel-info p i { color: #D32F2F; /* Đỏ đậm */ }
 
             /* Phòng */
             .room {
-                background-color: #222;
+                background-color: #fff; /* Trắng */
                 border-radius: 10px;
-                box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
-                padding: 20px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+                padding: 1.25rem; /* 20px */
                 animation: fadeInUp 1s ease-out;
                 transition: transform 0.3s ease;
             }
             .room:hover { transform: translateY(-5px); }
-            .room h4 { font-size: 20px; color: #0d6efd; margin-bottom: 10px; }
-            .room p { font-size: 15px; color: #ccc; margin: 8px 0; display: flex; align-items: center; gap: 10px; }
-            .room p i { color: #0d6efd; }
+            .room h4 { font-size: 1.25rem; /* 20px */ color: #D32F2F; /* Đỏ đậm */ margin-bottom: 0.625rem; /* 10px */ }
+            .room p { font-size: 0.9375rem; /* 15px */ color: #666; margin: 0.5rem 0; /* 8px */ display: flex; align-items: center; gap: 0.625rem; /* 10px */ }
+            .room p i { color: #D32F2F; /* Đỏ đậm */ }
             .room button {
-                background: linear-gradient(45deg, #0d6efd, #00b7eb);
+                background: linear-gradient(45deg, #D32F2F, #FF6659); /* Gradient đỏ */
                 color: #fff;
-                padding: 10px 25px;
+                padding: 0.625rem 1.5625rem; /* 10px 25px */
                 border: none;
                 border-radius: 6px;
-                font-size: 15px;
+                font-size: 0.9375rem; /* 15px */
                 cursor: pointer;
                 transition: background 0.3s ease, transform 0.2s ease;
             }
-            .room button:hover { background: linear-gradient(45deg, #0056b3, #0096c7); transform: translateY(-2px); }
+            .room button:hover { background: linear-gradient(45deg, #B71C1C, #E53935); transform: translateY(-2px); }
 
             /* Tiện ích và chính sách */
             .extra-info, .policy-section {
-                background-color: #222;
+                background-color: #fff; /* Trắng */
                 border-radius: 10px;
-                box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
-                padding: 20px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+                padding: 1.25rem; /* 20px */
                 animation: fadeInUp 0.8s ease-out;
             }
-            .extra-info h4, .policy-section h4 { font-size: 20px; color: #0d6efd; margin-bottom: 15px; }
+            .extra-info h4, .policy-section h4 { font-size: 1.25rem; /* 20px */ color: #D32F2F; /* Đỏ đậm */ margin-bottom: 0.9375rem; /* 15px */ }
             .extra-info ul { list-style: none; padding: 0; }
-            .extra-info ul li, .policy-section p { font-size: 15px; color: #ccc; margin: 10px 0; display: flex; align-items: center; gap: 10px; }
-            .extra-info ul li i, .policy-section p i { color: #0d6efd; }
+            .extra-info ul li, .policy-section p { font-size: 0.9375rem; /* 15px */ color: #666; margin: 0.625rem 0; /* 10px */ display: flex; align-items: center; gap: 0.625rem; /* 10px */ }
+            .extra-info ul li i, .policy-section p i { color: #D32F2F; /* Đỏ đậm */ }
 
-            h3 { font-size: 24px; text-align: center; margin: 40px 0 20px; animation: fadeIn 0.8s ease-out; }
-            .message { color: #d32f2f; text-align: center; font-size: 16px; margin: 20px 0; animation: fadeIn 0.5s ease-out; }
+            h3 { font-size: 1.5rem; /* 24px */ text-align: center; margin: 2.5rem 0 1.25rem; /* 40px 0 20px */ color: #D32F2F; animation: fadeIn 0.8s ease-out; }
+            .message { color: #D32F2F; /* Đỏ đậm */ text-align: center; font-size: 1rem; /* 16px */ margin: 1.25rem 0; /* 20px */ animation: fadeIn 0.5s ease-out; }
 
             /* Đặt câu hỏi */
             .question-section {
-                background-color: #222;
+                background-color: #fff; /* Trắng */
                 border-radius: 10px;
-                box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
-                padding: 20px;
-                max-width: 900px;
-                margin: 20px auto;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+                padding: 1.25rem; /* 20px */
+                max-width: 56.25rem; /* 900px */
+                margin: 1.25rem auto; /* 20px */
                 animation: fadeInUp 0.8s ease-out;
             }
-            .question-section h4 { font-size: 20px; color: #0d6efd; margin-bottom: 15px; }
-            .question-section form { display: flex; flex-direction: column; gap: 15px; }
+            .question-section h4 { font-size: 1.25rem; /* 20px */ color: #D32F2F; /* Đỏ đậm */ margin-bottom: 0.9375rem; /* 15px */ }
+            .question-section form { display: flex; flex-direction: column; gap: 0.9375rem; /* 15px */ }
             .question-section input, .question-section textarea {
-                padding: 10px;
+                padding: 0.625rem; /* 10px */
                 border: 1px solid #ccc;
                 border-radius: 6px;
-                background-color: #333;
-                color: #fff;
-                font-size: 15px;
+                background-color: #FFF8E1; /* Trắng kem */
+                color: #333;
+                font-size: 0.9375rem; /* 15px */
                 resize: none;
             }
             .question-section button {
-                background: linear-gradient(45deg, #0d6efd, #00b7eb);
+                background: linear-gradient(45deg, #D32F2F, #FF6659); /* Gradient đỏ */
                 color: #fff;
-                padding: 10px 25px;
+                padding: 0.625rem 1.5625rem; /* 10px 25px */
                 border: none;
                 border-radius: 6px;
-                font-size: 15px;
+                font-size: 0.9375rem; /* 15px */
                 cursor: pointer;
                 transition: background 0.3s ease, transform 0.2s ease;
                 align-self: flex-start;
             }
-            .question-section button:hover { background: linear-gradient(45deg, #0056b3, #0096c7); transform: translateY(-2px); }
+            .question-section button:hover { background: linear-gradient(45deg, #B71C1C, #E53935); transform: translateY(-2px); }
 
             @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
             @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }

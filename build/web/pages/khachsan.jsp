@@ -5,153 +5,231 @@
     <head>
         <title>Các Khách Sạn Tìm Thấy</title>
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Allison&display=swap" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
         <style>
             /* Tổng thể giao diện */
             body {
-                background-color: #1a1a1a;
-                color: white;
-                font-family: Arial, sans-serif;
+                font-family: 'Arial', sans-serif;
+                background-color: #F5F6F5; /* Nền sáng nhẹ */
+                color: #333;
+                line-height: 1.6;
+            }
+
+            /* Container chính */
+            .container {
+                max-width: 1200px;
+                margin-top: 50px;
+                padding: 0 15px;
+            }
+
+            h1.text-center {
+                font-size: 2.5rem;
+                font-weight: 700;
+                color: #2A7A6D; /* Màu xanh ngọc */
+                margin-bottom: 40px;
             }
 
             /* Layout khách sạn */
             .hotel-item {
                 display: flex;
                 align-items: center;
-                border: 1px solid #444;
-                margin-bottom: 20px;
-                padding: 15px;
-                background-color: #333;
-                border-radius: 8px;
+                background-color: #fff;
+                border-radius: 12px;
+                margin-bottom: 25px;
+                padding: 20px;
+                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
                 transition: transform 0.3s ease, box-shadow 0.3s ease;
-                width: 887px; /* Chiều rộng cố định */
-                height: 220px; /* Chiều cao cố định */
-                overflow: hidden; /* Ngăn chặn nội dung tràn ra ngoài */
+                position: relative;
+                overflow: hidden;
             }
 
             .hotel-item:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
+                transform: translateY(-8px);
+                box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
             }
 
             /* Hình ảnh khách sạn */
             .hotel-image img {
-                max-width: 100%;
-                height: auto;
-                border-radius: 8px;
-                width: 200px; /* Chiều rộng hình ảnh */
-                height: 180px; /* Chiều cao hình ảnh */
-                object-fit: cover; /* Đảm bảo hình ảnh không bị méo */
+                width: 220px;
+                height: 180px;
+                object-fit: cover;
+                border-radius: 10px;
+                transition: transform 0.3s ease;
+            }
+
+            .hotel-item:hover .hotel-image img {
+                transform: scale(1.05);
             }
 
             /* Chi tiết khách sạn */
             .hotel-details {
-                margin-left: 20px;
-                line-height: 1.4; /* Giảm khoảng cách giữa các dòng */
-                width: calc(100% - 220px); /* Giới hạn chiều rộng của phần chi tiết */
-                position: relative; /* Để đặt đánh giá ở góc trên bên phải */
-                overflow: hidden; /* Ngăn chặn nội dung tràn ra ngoài */
+                margin-left: 25px;
+                width: calc(100% - 250px);
+                position: relative;
             }
 
             .hotel-details h5 {
-                margin-top: 0;
-                font-size: 1.2rem;
-                color: #00bfff; /* Màu xanh dương cho tên khách sạn */
+                font-size: 1.5rem;
+                color: #2A7A6D; /* Màu xanh ngọc */
+                font-weight: 600;
+                margin-bottom: 12px;
+                transition: color 0.3s ease;
+            }
+
+            .hotel-item:hover .hotel-details h5 {
+                color: #1F5C51; /* Tông xanh đậm hơn khi hover */
             }
 
             .hotel-details p {
-                margin: 5px 0;
-                font-size: 0.9rem;
-                white-space: normal; /* Cho phép xuống dòng */
-                display: -webkit-box;
-
-            }
-
-            .hotel-details .rating {
-                position: absolute; /* Đặt đánh giá ở góc trên bên phải */
-                top: 0;
-                right: 0;
-                margin-top: 0;
-                font-size: 1.2rem;
-                color: gold;
-            }
-
-            .hotel-details .rating span {
-                margin-right: 10px;
-                color: #00bfff; /* Màu xanh dương cho chữ "Xuất sắc" */
+                margin: 6px 0;
+                font-size: 1rem;
+                color: #555;
             }
 
             .hotel-details .location {
-                color: #00ff00; /* Màu xanh lá cây cho địa chỉ */
+                color: #28a745;
+                font-weight: 500;
             }
 
             .hotel-details .description {
+                font-size: 0.95rem;
+                color: #777;
                 margin-top: 10px;
+                line-height: 1.5;
+            }
+
+            .hotel-details .rating {
+                position: absolute;
+                top: -5px;
+                right: 15px;
+                font-size: 1.2rem;
+                font-weight: 700;
+                color: #F5E8C7; /* Màu kem nhạt */
+                background-color: #2A7A6D; /* Màu xanh ngọc */
+                padding: 5px 12px;
+                border-radius: 20px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+
+            .hotel-details .rating span:first-child {
+                color: gold;
+            }
+
+            /* Bộ lọc */
+            .card.bg-light {
+                background-color: #fff !important;
+                border-radius: 12px;
+                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+                padding: 20px;
+            }
+
+            .card.bg-light .card-title {
+                font-size: 1.6rem;
+                color: #2A7A6D; /* Màu xanh ngọc */
+                font-weight: 600;
+                margin-bottom: 20px;
+            }
+
+            .card.bg-light label {
+                color: #333;
+                font-weight: 500;
+            }
+
+            .filter-option {
+                display: flex;
+                align-items: center;
+                margin-bottom: 12px;
+            }
+
+            .filter-option input[type="checkbox"],
+            .filter-option input[type="radio"] {
+                margin-right: 10px;
+                accent-color: #2A7A6D; /* Màu checkbox/radio */
+            }
+
+            .filter-option label {
+                font-size: 1rem;
+                cursor: pointer;
+                transition: color 0.3s ease;
+            }
+
+            .filter-option:hover label {
+                color: #2A7A6D; /* Màu xanh ngọc khi hover */
+            }
+
+            .card.bg-light button,
+            .card.bg-light a.btn {
+                background-color: #2A7A6D; /* Màu xanh ngọc */
+                color: #F5E8C7; /* Màu kem nhạt */
+                border: none;
+                padding: 12px;
+                font-size: 1.1rem;
+                border-radius: 8px;
+                transition: background-color 0.3s ease, transform 0.2s ease;
+            }
+
+            .card.bg-light button:hover,
+            .card.bg-light a.btn:hover {
+                background-color: #1F5C51; /* Tông xanh đậm hơn */
+                transform: translateY(-2px);
+            }
+
+            .card.bg-light a.btn-secondary {
+                background-color: #6c757d;
+            }
+
+            .card.bg-light a.btn-secondary:hover {
+                background-color: #5a6268;
             }
 
             /* Phân trang */
             .pagination {
                 display: flex;
                 justify-content: center;
-                margin-top: 20px;
+                align-items: center;
+                margin-top: 30px;
             }
 
             .pagination a {
-                margin: 0 5px;
-                padding: 5px 10px;
+                padding: 10px 18px;
                 text-decoration: none;
-                color: white;
-                background-color: #333;
-                border-radius: 5px;
-                transition: background-color 0.3s ease;
+                color: #F5E8C7; /* Màu kem nhạt */
+                background-color: #2A7A6D; /* Màu xanh ngọc */
+                border-radius: 8px;
+                margin: 0 8px;
+                font-size: 1rem;
+                transition: background-color 0.3s ease, transform 0.2s ease;
             }
 
             .pagination a:hover {
-                background-color: #007bff;
+                background-color: #1F5C51; /* Tông xanh đậm hơn */
+                transform: translateY(-2px);
             }
 
-            .pagination a.active {
-                background-color: #007bff;
+            .pagination span {
+                font-size: 1.1rem;
+                color: #555;
             }
 
-            /* Bộ lọc */
-            .card.bg-light {
-                background-color: #333 !important;
-                color: white;
-            }
-
-            .card.bg-light label,
-            .card.bg-light input {
-                color: white;
-            }
-
-            .card.bg-light button {
-                background-color: #007bff;
+            /* Thông báo khi không tìm thấy */
+            .alert-warning {
+                background-color: #fff3cd;
                 border: none;
-                padding: 10px; /* Tăng kích thước nút tìm kiếm */
-                font-size: 1rem; /* Font size lớn hơn */
-                width: 100%; /* Nút tìm kiếm chiếm toàn bộ chiều rộng */
+                border-radius: 12px;
+                padding: 20px;
+                text-align: center;
+                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
             }
 
-            .card.bg-light button:hover {
-                background-color: #0056b3;
+            .alert-warning h4 {
+                color: #856404;
+                font-weight: 600;
             }
 
-            /* Checkbox và radio */
-            .filter-option {
-                display: flex;
-                align-items: center;
-                margin-bottom: 8px; /* Giảm khoảng cách giữa các dòng */
-            }
-
-            .filter-option input[type="checkbox"],
-            .filter-option input[type="radio"] {
-                margin-right: 10px;
-            }
-
-            .filter-option label {
-                cursor: pointer;
-                font-size: 0.9rem; /* Giảm kích thước chữ */
-            }
+            /* Footer */
+            
         </style>
     </head>
     <body>
@@ -159,8 +237,6 @@
         <%@ include file="/includes/header.jsp" %>
 
         <div class="container mt-5">
-            <h1 class="text-center mb-4">Danh sách khách sạn</h1>
-
             <!-- Bộ lọc -->
             <div class="row mb-4">
                 <div class="col-md-3">
@@ -252,7 +328,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                             </c:forEach>
                         </c:otherwise>
                     </c:choose>
@@ -270,6 +345,7 @@
                 </div>
             </div>
         </div>
+        <%@ include file="/includes/footer.jsp" %>
 
         <!-- Bootstrap JS -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>

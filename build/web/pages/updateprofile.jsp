@@ -28,9 +28,7 @@
 
         .container {
             display: flex;
-            margin: 20px auto;
             width: 1200px;
-            background: white;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -121,13 +119,7 @@
         }
 
         /* Footer */
-        footer {
-            background-color: #343a40;
-            color: white;
-            text-align: center;
-            padding: 15px;
-            margin-top: auto;
-        }
+      
 
     </style>
     <body>
@@ -186,8 +178,6 @@
             </div>
         </div>
 
-        <footer>
-            <p>&copy; 2025 Nice Dream Hotel. All rights reserved.</p>
-        </footer>
+    <%@ include file="/includes/footer.jsp" %>
     </body>
 </html>

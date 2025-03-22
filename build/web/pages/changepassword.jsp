@@ -27,7 +27,6 @@
             display: flex;
             margin: 20px auto;
             width: 1200px;
-            background: white;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -109,14 +108,7 @@
         }
 
         /* Footer */
-        footer {
-            text-align: center;
-            padding: 15px 0;
-            background-color: #333;
-            color: white;
-            margin-top: auto; /* Đảm bảo footer nằm ở dưới cùng */
-            width: 100%;
-        }
+
     </style>
     <body>
         <div class="container">
@@ -126,7 +118,6 @@
                 <ul>
                     <li><a href="<%= request.getContextPath() %>/pages/updateprofile.jsp">Cập nhật hồ sơ</a></li>
                     <li><a href="<%= request.getContextPath() %>/pages/changepassword.jsp">Đổi mật khẩu</a></li>
-                    <li><a href="<%= request.getContextPath() %>/pages/payment.jsp">Cập nhật phương thức thanh toán</a></li>
                     <li><a href="<%= request.getContextPath() %>/huydatphong">Lịch sử đặt phòng</a></li>
                 </ul>
             </div>
@@ -158,8 +149,6 @@
             </div>
         </div>
 
-        <footer>
-            <p>&copy; 2025 Nice Dream Hotel. All rights reserved.</p>
-        </footer>
+        <%@ include file="/includes/footer.jsp" %>
     </body>
 </html>

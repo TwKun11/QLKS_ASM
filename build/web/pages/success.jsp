@@ -14,67 +14,78 @@
 
     <style>
         body {
-            background: linear-gradient(to right, #8CA6DB, #B993D6);
+            background: linear-gradient(to right, #74ebd5, #acb6e5); /* Gradient xanh ngọc và tím nhạt */
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            margin: 0;
+            overflow: hidden;
         }
 
         .success-container {
-            background: white;
-            width: 800px;
-            height: 400px;
+            background: #ffffff;
+            width: 700px; /* Giảm chiều rộng để gọn hơn */
+            padding: 40px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
-            border-radius: 15px;
-            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.3);
-            animation: fadeIn 1s ease-in-out;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Bóng nhẹ nhàng hơn */
+            animation: fadeIn 0.8s ease-in-out;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .success-icon {
-            font-size: 60px;
-            color: #4CAF50;
-            margin-bottom: 15px;
+            font-size: 70px;
+            color: #2ecc71; /* Xanh lá tươi sáng hơn */
+            margin-bottom: 20px;
+            animation: bounceIn 0.6s ease-out;
         }
 
         .success-container h1 {
-            color: #4CAF50;
-            font-size: 36px;
-            font-weight: bold;
-            margin-bottom: 10px;
+            color: #2ecc71; /* Đồng bộ màu xanh lá với icon */
+            font-size: 34px;
+            font-weight: 700;
+            margin-bottom: 15px;
         }
 
         .success-container p {
             font-size: 18px;
-            color: #555;
+            color: #6c757d; /* Xám đậm nhẹ nhàng */
+            margin-bottom: 10px;
         }
 
         .btn-home {
-            margin-top: 20px;
-            padding: 12px 25px;
+            margin-top: 25px;
+            padding: 12px 30px;
             font-size: 18px;
-            font-weight: bold;
-            border-radius: 30px;
+            font-weight: 600;
+            border-radius: 50px; /* Bo tròn hơn */
             border: none;
-            background: linear-gradient(to right, #8CA6DB, #B993D6);
-            color: white;
+            background: linear-gradient(to right, #74ebd5, #acb6e5); /* Đồng bộ với nền */
+            color: #ffffff;
             text-decoration: none;
-            transition: 0.3s ease-in-out;
+            transition: all 0.3s ease;
         }
 
         .btn-home:hover {
-            background: linear-gradient(to right, #B993D6, #8CA6DB);
-            transform: scale(1.05);
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(to right, #acb6e5, #74ebd5); /* Đảo ngược gradient */
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); /* Bóng nổi hơn khi hover */
+        }
+
+        /* Hiệu ứng bounce cho icon */
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(1); }
         }
     </style>
 </head>

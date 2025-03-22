@@ -34,93 +34,109 @@
     <head>
         <meta charset="UTF-8">
         <title>Nice Dream Hotel</title>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
         <style>
             body {
                 margin: 0;
-                font-family: Arial, sans-serif;
+                font-family: 'Poppins', sans-serif;
+                background-color: #f9f9f9;
             }
             .header {
-                background-color: #002b5c;
+                background-color: #36383b; /* Màu xanh dương nhạt */
                 color: white;
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                padding: 20px 50px;
-                height: 80px;
+                padding: 15px 50px;
+                height: 70px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             }
             .nav {
                 display: flex;
-                gap: 25px;
+                align-items: center;
+                gap: 30px;
             }
             .nav a {
                 color: white;
                 text-decoration: none;
-                font-size: 18px;
-                font-weight: bold;
-                transition: color 0.3s;
+                font-size: 16px;
+                font-weight: 600;
+                transition: color 0.3s ease;
             }
             .nav a:hover, .nav a.active {
-                color: #00aaff;
+                color: #F5A623; /* Màu vàng nhạt khi hover hoặc active */
             }
             .user {
                 display: flex;
                 align-items: center;
-                gap: 15px;
+                gap: 20px;
             }
             .user a {
-                background-color: #00aaff;
+                background-color: #F5A623; /* Màu vàng nhạt */
                 color: white;
-                padding: 8px 15px;
-                border-radius: 5px;
+                padding: 8px 20px;
+                border-radius: 25px;
                 text-decoration: none;
-                font-weight: bold;
+                font-weight: 600;
+                transition: background-color 0.3s ease;
             }
             .user a:hover {
-                background-color: #0077cc;
+                background-color: #e59400; /* Tông vàng đậm hơn khi hover */
             }
             .username {
-                font-weight: bold;
-                font-size: 18px;
-                margin-right: 15px;
+                font-weight: 600;
+                font-size: 16px;
+                color: white;
             }
             .dashboard-btn {
-                background-color: #ffdd57;
-                color: black;
+                background-color: #F5A623; /* Màu vàng nhạt */
+                color: white;
                 border: none;
-                padding: 10px 15px;
+                padding: 10px 20px;
                 font-size: 16px;
-                font-weight: bold;
-                border-radius: 5px;
+                font-weight: 600;
+                border-radius: 25px;
                 cursor: pointer;
-                transition: background 0.3s ease;
+                transition: background-color 0.3s ease;
                 text-decoration: none;
             }
             .dashboard-btn:hover {
-                background-color: #ffcc00;
+                background-color: #e59400; /* Tông vàng đậm hơn khi hover */
+            }
+            /* Canh giữa nội dung nếu cần */
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                width: 100%;
             }
         </style>
     </head>
     <body>
         <div class="header">
-            <div class="nav">
-                <a href="${pageContext.request.contextPath}/home" class="<%= currentPage.contains("/home") ? "active" : "" %>">Trang chủ</a>
-                <a href="${pageContext.request.contextPath}/khachsan" class="<%= currentPage.contains("/khachsan") ? "active" : "" %>">Khách sạn</a>
-                <a href="${pageContext.request.contextPath}/pages/profile.jsp" class="<%= currentPage.contains("/pages/profile.jsp") ? "active" : "" %>">Cá nhân</a>
-                <a href="${pageContext.request.contextPath}/huydatphong" class="<%= currentPage.contains("huydatphong") ? "active" : "" %>">Lịch sử đặt phòng</a>
-                
-                <%-- Hiển thị Dashboard nếu user có idRole = 1 (admin) --%>
-                <% if (user != null && user.getIdRole() == 1) { %>
-                    <a href="${pageContext.request.contextPath}/khachsans" class="dashboard-btn">🛠 DashBoard</a>
-                <% } %>
-            </div>
+            <div class="container">
+                <div class="nav">
+                    <a href="${pageContext.request.contextPath}/home" class="<%= currentPage.contains("/home") ? "active" : "" %>">Trang chủ</a>
+                    <a href="${pageContext.request.contextPath}/khachsan" class="<%= currentPage.contains("/khachsan") ? "active" : "" %>">Khách sạn</a>
+                    <a href="${pageContext.request.contextPath}/pages/profile.jsp" class="<%= currentPage.contains("/pages/profile.jsp") ? "active" : "" %>">Cá nhân</a>
+                    <a href="${pageContext.request.contextPath}/huydatphong" class="<%= currentPage.contains("huydatphong") ? "active" : "" %>">Lịch sử đặt phòng</a>
+                    
+                    <%-- Hiển thị Dashboard nếu user có idRole = 1 (admin) --%>
+                    <% if (user != null && user.getIdRole() == 1) { %>
+                        <a href="${pageContext.request.contextPath}/datphongs" class="dashboard-btn">🛠 Dashboard</a>
+                    <% } %>
+                </div>
 
-            <div class="user">
-                <% if (user != null) { %>
-                <span class="username">Xin chào, <%= user.getTenTaiKhoan() %>!</span>
-                <a href="<%= request.getContextPath() %>/logout">Đăng Xuất</a>
-                <% } else { %>
-                <a href="<%= request.getContextPath() %>/pages/login.jsp">Đăng Nhập</a>
-                <% } %>
+                <div class="user">
+                    <% if (user != null) { %>
+                    <span class="username">Xin chào, <%= user.getTenTaiKhoan() %>!</span>
+                    <a href="<%= request.getContextPath() %>/logout">Đăng Xuất</a>
+                    <% } else { %>
+                    <a href="<%= request.getContextPath() %>/pages/login.jsp">Đăng Nhập</a>
+                    <% } %>
+                </div>
             </div>
         </div>
     </body>

@@ -5,6 +5,7 @@
 <html>
     <head>
         <title>Lịch sử đặt phòng</title>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
         <style>
             /* Thiết lập layout */
             html, body {
@@ -17,15 +18,7 @@
                 background-color: #f4f4f4;
             }
 
-            .container {
-                flex-grow: 1;
-                width: 80%;
-                margin: 20px auto;
-                background: white;
-                padding: 20px;
-                border-radius: 8px;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            }
+
 
             h2 {
                 text-align: center;
@@ -104,20 +97,13 @@
             }
 
             /* Footer */
-            footer {
-                text-align: center;
-                padding: 15px 0;
-                background-color: #333;
-                color: white;
-                margin-top: auto; /* Đẩy footer xuống cuối trang */
-                width: 100%;
-            }
+
         </style>
     </head>
     <body>
 
         <%@ include file="/includes/header.jsp" %>
-        <div class="container">
+        <div class="">
             <h2>Lịch sử đặt phòng</h2>
 
             <c:if test="${empty bookings}">
@@ -206,9 +192,7 @@
             }
         </script>
 
-        <footer>
-            <p>&copy; 2025 Nice Dream Hotel. All rights reserved.</p>
-        </footer>
+    <%@ include file="/includes/footer.jsp" %>
 
     </body>
 </html>

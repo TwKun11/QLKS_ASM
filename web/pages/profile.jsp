@@ -1,15 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="model.TaiKhoan" %>
-
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Hồ sơ cá nhân</title>
+        <title>Hồ sơ cá nhân - Nice Dream Hotel</title>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
         <style>
             body {
                 font-family: 'Poppins', sans-serif;
-                background-color: #f8f9fa;
+                background-color: #f9f9f9;
                 margin: 0;
                 padding: 0;
                 display: flex;
@@ -18,12 +19,18 @@
                 color: #333;
             }
 
+            /* Đảm bảo header không bị che */
+            header {
+                position: sticky;
+                top: 0;
+                z-index: 1000; /* Đưa header lên trên cùng */
+                width: 100%;
+            }
+
             .container {
                 display: flex;
-                margin: 40px auto;
                 width: 90%;
                 max-width: 1200px;
-                background: white;
                 padding: 30px;
                 border-radius: 12px;
                 box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
@@ -32,28 +39,22 @@
             }
 
             @keyframes fadeIn {
-                from {
-                    opacity: 0;
-                    transform: translateY(20px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
             }
 
             /* Sidebar */
             .sidebar {
                 width: 260px;
-                border-right: 2px solid #eee;
                 padding-right: 20px;
+                border-right: 1px solid #eee;
             }
 
             .sidebar h3 {
                 font-size: 20px;
-                margin-bottom: 15px;
-                color: #007bff;
-                font-weight: bold;
+                font-weight: 600;
+                color: #4A90E2; /* Xanh dương nhạt */
+                margin-bottom: 20px;
             }
 
             .sidebar ul {
@@ -62,8 +63,8 @@
             }
 
             .sidebar ul li {
-                margin: 12px 0;
-                transition: transform 0.3s;
+                margin: 15px 0;
+                transition: transform 0.3s ease;
             }
 
             .sidebar ul li:hover {
@@ -73,16 +74,16 @@
             .sidebar ul li a {
                 text-decoration: none;
                 color: #555;
-                font-size: 16px;
+                font-size: 15px;
                 font-weight: 500;
-                transition: color 0.3s;
+                transition: color 0.3s ease;
             }
 
             .sidebar ul li a:hover {
-                color: #007bff;
+                color: #F5A623; /* Vàng nhạt */
             }
 
-            /* Nội dung hồ sơ */
+            /* Profile Content */
             .profile-content {
                 flex-grow: 1;
                 padding-left: 30px;
@@ -90,71 +91,105 @@
 
             .profile-content h2 {
                 text-align: center;
-                font-size: 26px;
-                color: #333;
-                font-weight: bold;
-                margin-bottom: 20px;
+                font-size: 28px;
+                font-weight: 600;
+                color: #4A90E2; /* Xanh dương nhạt */
+                margin-bottom: 25px;
             }
 
             .form-group {
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                margin-bottom: 15px;
-                padding: 10px;
-                border-bottom: 1px solid #ddd;
+                margin-bottom: 20px;
+                padding: 10px 0;
+                border-bottom: 1px solid #eee;
             }
 
             .form-group label {
-                font-size: 18px;
+                font-size: 16px;
                 font-weight: 600;
                 width: 150px;
-                color: #444;
+                color: #333;
             }
 
             .form-group input {
                 flex-grow: 1;
-                border: none;
-                background: #f0f0f0;
+                border: 1px solid #ddd;
+                background: #f9f9f9;
                 padding: 10px;
-                border-radius: 6px;
-                font-size: 16px;
-                transition: background 0.3s;
+                border-radius: 5px;
+                font-size: 15px;
+                color: #555;
+                transition: border-color 0.3s ease;
             }
 
             .form-group input:hover {
-                background: #e9ecef;
+                border-color: #4A90E2; /* Xanh dương nhạt */
             }
 
-            /* Nút hiển thị mật khẩu */
+            /* Password Container */
             .password-container {
+                position: relative;
                 display: flex;
                 align-items: center;
+                width: calc(100% - 150px);
+            }
+
+            .password-container input {
+                width: 100%;
+                padding-right: 60px; /* Để chỗ cho nút */
             }
 
             .password-container button {
+                position: absolute;
+                right: 5px;
                 border: none;
-                background: #007bff;
+                background: #F5A623; /* Vàng nhạt */
                 color: white;
-                padding: 5px 10px;
-                border-radius: 4px;
+                padding: 6px 12px;
+                border-radius: 5px;
                 cursor: pointer;
                 font-size: 14px;
-                transition: background 0.3s;
+                font-weight: 600;
+                transition: background 0.3s ease;
             }
 
             .password-container button:hover {
-                background: #0056b3;
+                background: #e59400; /* Tông vàng đậm hơn */
             }
 
-            /* Footer */
-            footer {
-                background-color: #343a40;
-                color: white;
-                text-align: center;
-                padding: 15px;
-                margin-top: auto;
-                font-size: 16px;
+            /* Responsive */
+            @media (max-width: 768px) {
+                .container {
+                    flex-direction: column;
+                    width: 95%;
+                    padding: 20px;
+                }
+                .sidebar {
+                    width: 100%;
+                    border-right: none;
+                    border-bottom: 1px solid #eee;
+                    padding-bottom: 20px;
+                    margin-bottom: 20px;
+                }
+                .profile-content {
+                    padding-left: 0;
+                }
+                .form-group {
+                    flex-direction: column;
+                    align-items: flex-start;
+                }
+                .form-group label {
+                    width: 100%;
+                    margin-bottom: 5px;
+                }
+                .form-group input {
+                    width: 100%;
+                }
+                .password-container {
+                    width: 100%;
+                }
             }
         </style>
         <script>
@@ -194,10 +229,12 @@
                     <label>Tên tài khoản:</label>
                     <input type="text" value="<%= user.getTenTaiKhoan() %>" readonly>
                 </div>
-                <div class="form-group password-container">
+                <div class="form-group">
                     <label>Mật khẩu:</label>
-                    <input type="password" id="passwordField" value="<%= user.getMatKhau() %>" readonly>
-                    <button type="button" id="togglePassword" onclick="togglePasswordVisibility()">Hiện</button>
+                    <div class="password-container">
+                        <input type="password" id="passwordField" value="<%= user.getMatKhau() %>" readonly>
+                        <button type="button" id="togglePassword" onclick="togglePasswordVisibility()">Hiện</button>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label>Tên đầy đủ:</label>
@@ -217,8 +254,6 @@
                 </div>
             </div>
         </div>
-        <footer class="bg-dark text-white text-center py-4 mt-5">
-            <p>&copy; 2025 Nice Dream Hotel. All rights reserved.</p>
-        </footer>
+        <%@ include file="/includes/footer.jsp" %>
     </body>
 </html>
