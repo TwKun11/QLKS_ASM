@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: qlks-asm
+    env: java
+    plan: free
+    buildCommand: "true"
+    startCommand: "java -jar webapp-runner.jar --port $PORT QLKS_ASM.war"
+    envVars:
+      - key: GOOGLE_CLIENT_ID
+        sync: false # Giá trị sẽ được thêm trên Render Dashboard
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false # Giá trị sẽ được thêm trên Render Dashboard
+      - key: GOOGLE_REDIRECT_URI
+        value: "https://qlks-asm.onrender.com/roombooking/LoginServlet"
+      - key: JAVA_VERSION
+        value: "11"
