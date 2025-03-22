@@ -4,6 +4,8 @@
  */
 package controller;
 
+import dao.DAOKhachSan;
+import dao.DAOLoaiKhachSan;
 import dao.DAOThanhPho;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,6 +16,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
+import model.KhachSan;
+import model.LoaiKhachSan;
 import model.ThanhPho;
 
 /**
@@ -22,6 +26,11 @@ import model.ThanhPho;
  */
 @WebServlet(name = "HomePageServlet", urlPatterns = {"/home"})
 public class HomePageServlet extends HttpServlet {
+    
+    // Thêm các instance của DAO
+    private DAOKhachSan daoKhachSan = new DAOKhachSan();
+    private DAOLoaiKhachSan daoLoaiKhachSan = new DAOLoaiKhachSan();
+    private DAOThanhPho daoThanhPho = new DAOThanhPho();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -78,9 +87,13 @@ public class HomePageServlet extends HttpServlet {
     private void showHomePage(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // Chuyển hướng đến trang homePage.jsp
-        List<ThanhPho> cityList = DAOThanhPho.getAll();
+        List<ThanhPho> cityList = daoThanhPho.getAll();
         request.setAttribute("listThanhPho", cityList);
-        request.getRequestDispatcher("home.jsp").forward(request, response);
+        List<LoaiKhachSan> categoriesKhachSans = daoLoaiKhachSan.getAll();
+        request.setAttribute("listLoaiKhachSan", categoriesKhachSans);
+        List<KhachSan> khachSanNoiBac = daoKhachSan.getKhachSanGoodRate();
+        request.setAttribute("khachSanNoiBac", khachSanNoiBac);
+        request.getRequestDispatcher("/pages/home.jsp").forward(request, response);
     }
 
     private void showErrorPage(HttpServletRequest request, HttpServletResponse response)

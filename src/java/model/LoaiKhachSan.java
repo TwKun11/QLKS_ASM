@@ -2,9 +2,8 @@ package model;
 
 import java.io.Serializable;
 
-public class LoaiKhachSan implements Serializable {
+public class LoaiKhachSan {
 
-    private static final long serialVersionUID = 543213541L;
 
     int id;
     String ten;
@@ -14,7 +13,12 @@ public class LoaiKhachSan implements Serializable {
 
     public LoaiKhachSan() {
     }
-
+   public LoaiKhachSan(int id, String ten, String moTa, String urlHinhAnh) {
+        this.id = id;
+        this.ten = ten;
+        this.moTa = moTa;
+        this.urlHinhAnh = urlHinhAnh;
+    }
     public LoaiKhachSan(int id, String ten, String moTa, String urlHinhAnh, int soKhachSan) {
         this.id = id;
         this.ten = ten;
@@ -30,12 +34,7 @@ public class LoaiKhachSan implements Serializable {
         this.urlHinhAnh = tp.urlHinhAnh;
     }
 
-    public void reload(int id, String ten, String moTa, String urlHinhAnh) {
-        this.id = id;
-        this.ten = ten;
-        this.moTa = moTa;
-        this.urlHinhAnh = urlHinhAnh;
-    }
+
 
     public int getId() {
         return id;

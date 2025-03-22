@@ -2,49 +2,39 @@ package model;
 
 import java.io.Serializable;
 
-public class TaiKhoan implements Serializable {
+public class TaiKhoan {
 
-    private static final long serialVersionUID = 45312311L;
-    
     String tenTaiKhoan;
     String matKhau;
     String hoTen;
     boolean gioiTinh;
     String soDienThoai;
     String email;
-    boolean isAdmin;
+    int idRole;
 
     public TaiKhoan() {
     }
 
-    public TaiKhoan(String tenTaiKhoan, String matKhau, String hoTen, boolean gioiTinh, String soDienThoai, String email, boolean isAdmin) {
+    public int getIdRole() {
+        return idRole;
+    }
+
+    public TaiKhoan(String tenTaiKhoan, String matKhau, String hoTen, boolean gioiTinh, String soDienThoai, String email, int Role) {
         this.tenTaiKhoan = tenTaiKhoan;
         this.matKhau = matKhau;
         this.hoTen = hoTen;
         this.gioiTinh = gioiTinh;
         this.soDienThoai = soDienThoai;
         this.email = email;
-        this.isAdmin = isAdmin;
+        this.idRole = Role;
     }
-    
-    public TaiKhoan(TaiKhoan tk){
-        this.tenTaiKhoan = tk.tenTaiKhoan;
-        this.matKhau = tk.matKhau;
-        this.hoTen = tk.hoTen;
-        this.gioiTinh = tk.gioiTinh;
-        this.soDienThoai = tk.soDienThoai;
-        this.email = tk.email;
-        this.isAdmin = tk.isAdmin;
-    }
-    
-    public void reload(String tenTaiKhoan, String matKhau, String hoTen, boolean gioiTinh, String soDienThoai, String email, boolean isAdmin) {
+
+    public TaiKhoan(String tenTaiKhoan, String email, String matKhau, String hoTen, int idRole) {
         this.tenTaiKhoan = tenTaiKhoan;
+        this.email = email;
         this.matKhau = matKhau;
         this.hoTen = hoTen;
-        this.gioiTinh = gioiTinh;
-        this.soDienThoai = soDienThoai;
-        this.email = email;
-        this.isAdmin = isAdmin;
+        this.idRole = idRole;
     }
 
     public String getTenTaiKhoan() {
@@ -79,6 +69,11 @@ public class TaiKhoan implements Serializable {
         this.gioiTinh = gioiTinh;
     }
 
+    // Setter cần có
+    public void setIdRole(int idRole) {
+        this.idRole = idRole;
+    }
+
     public String getSoDienThoai() {
         return soDienThoai;
     }
@@ -95,12 +90,4 @@ public class TaiKhoan implements Serializable {
         this.email = email;
     }
 
-    public boolean isIsAdmin() {
-        return isAdmin;
-    }
-
-    public void setIsAdmin(boolean isAdmin) {
-        this.isAdmin = isAdmin;
-    }
-    
 }

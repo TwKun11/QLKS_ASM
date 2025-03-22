@@ -1,11 +1,11 @@
 package model;
 
 import java.io.Serializable;
+import java.util.List;
 
-public class KhachSan implements Serializable  {
+public class KhachSan  {
 
-    private static final long serialVersionUID = 1234551L;
-    
+
     int id;
     String ten;
     String diaChi;
@@ -20,8 +20,24 @@ public class KhachSan implements Serializable  {
     int idLoaiKhachSan;
     String tenLoaiKhachSan;
     String urlHinhAnhThanhPho;
+    List<Phong> phongList;
 
+    // Constructor, getter, setter, và các phương thức khác...
     public KhachSan() {
+    }
+
+    public KhachSan(int id, String ten, String diaChi, String soDienThoai, int cachTrungTam, String moTa, boolean giapBien, int danhGia, int buaAn, int idThanhPho, int idLoaiKhachSan) {
+        this.id = id;
+        this.ten = ten;
+        this.diaChi = diaChi;
+        this.soDienThoai = soDienThoai;
+        this.cachTrungTam = cachTrungTam;
+        this.moTa = moTa;
+        this.giapBien = giapBien;
+        this.danhGia = danhGia;
+        this.buaAn = buaAn;
+        this.idThanhPho = idThanhPho;
+        this.idLoaiKhachSan = idLoaiKhachSan;
     }
 
     public KhachSan(int id, String ten, String diaChi, String soDienThoai, int cachTrungTam, String moTa, boolean giapBien, int danhGia, int buaAn, int idThanhPho, String tenThanhPho, int idLoaiKhachSan, String tenLoaiKhachSan, String urlHinhAnhThanhPho) {
@@ -57,22 +73,15 @@ public class KhachSan implements Serializable  {
         this.tenLoaiKhachSan = ks.tenLoaiKhachSan;
         this.urlHinhAnhThanhPho = ks.urlHinhAnhThanhPho;
     }
-    
-    public void reload(int id, String ten, String diaChi, String soDienThoai, int cachTrungTam, String moTa, boolean giapBien, int danhGia, int buaAn, int idThanhPho, String tenThanhPho, int idLoaiKhachSan, String tenLoaiKhachSan, String urlHinhAnhThanhPho) {
-        this.id = id;
-        this.ten = ten;
-        this.diaChi = diaChi;
-        this.soDienThoai = soDienThoai;
-        this.cachTrungTam = cachTrungTam;
-        this.moTa = moTa;
-        this.giapBien = giapBien;
-        this.danhGia = danhGia;
-        this.buaAn = buaAn;
-        this.idThanhPho = idThanhPho;
-        this.tenThanhPho = tenThanhPho;
-        this.idLoaiKhachSan = idLoaiKhachSan;
-        this.tenLoaiKhachSan = tenLoaiKhachSan;
-        this.urlHinhAnhThanhPho = urlHinhAnhThanhPho;
+
+
+
+    public List<Phong> getPhongList() {
+        return phongList;
+    }
+
+    public void setPhongList(List<Phong> phongList) {
+        this.phongList = phongList;
     }
 
     public int getId() {
