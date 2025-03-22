@@ -96,6 +96,27 @@ public class AdminLoaiKhachSanServlet extends HttpServlet {
         response.sendRedirect("loaikhachsans?action=list");
     }
 
+    private void searchLoaiKhachSan(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    String keyword = request.getParameter("name");
+
+    // Kiểm tra nếu từ khóa rỗng hoặc null, trả về danh sách đầy đủ
+    List<LoaiKhachSan> danhSach = daoLoaiKhachSan.getAll();
+    List<LoaiKhachSan> ketQuaTimKiem;
+
+    if (keyword == null || keyword.trim().isEmpty()) {
+        ketQuaTimKiem = danhSach; // Trả về toàn bộ danh sách nếu không có từ khóa
+    } else {
+        String keywordLower = keyword.toLowerCase().trim();
+        ketQuaTimKiem = danhSach.stream()
+                .filter(tp -> tp.getTen().toLowerCase().contains(keywordLower))
+                .toList();
+    }
+
+    request.setAttribute("loaikhachsans", ketQuaTimKiem);
+    request.getRequestDispatcher("jsp/loaikhachsan/listLoaiKhachSan.jsp").forward(request, response);
+}
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -150,6 +171,9 @@ public class AdminLoaiKhachSanServlet extends HttpServlet {
             case "delete":
                 deleteLoaiKhachSan(request, response);
                 break;
+            case "search":
+                searchLoaiKhachSan(request, response);
+                break;    
             default:
                 listLoaiKhachSan(request, response);
                 break;
@@ -166,6 +190,9 @@ public class AdminLoaiKhachSanServlet extends HttpServlet {
             case "update":
                 updateLoaiKhachSan(request, response);
                 break;
+            case "search":
+                searchLoaiKhachSan(request, response);
+                break;     
             default:
                 listLoaiKhachSan(request, response);
                 break;

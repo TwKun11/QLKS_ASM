@@ -203,6 +203,7 @@
                     <button type="submit">Tìm kiếm</button>
                 </form>
 
+
                 <%-- Thiết lập số thành phố hiển thị trên mỗi trang --%>
                 <c:set var="pageSize" value="10"/>
                 <c:set var="currentPage" value="${param.page != null ? param.page : 1}"/>

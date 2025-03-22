@@ -152,11 +152,10 @@ public class AdminDatPhongServlet extends HttpServlet {
         List<DatPhong> danhSach = daoDatPhong.getAll();
 
         List<DatPhong> ketQuaTimKiem = danhSach.stream()
-                .filter(dp -> dp.getTaiKhoan().toLowerCase().contains(keyword.toLowerCase())
-                || String.valueOf(dp.getIdPhong()).contains(keyword))
+                .filter(ks -> ks.getTaiKhoan().toLowerCase().contains(keyword.toLowerCase()))
                 .toList();
 
-        request.setAttribute("datPhongs", ketQuaTimKiem);
+        request.setAttribute("datphongs", ketQuaTimKiem);
         request.getRequestDispatcher("jsp/datphong/listDatPhong.jsp").forward(request, response);
     }
 
@@ -197,8 +196,9 @@ public class AdminDatPhongServlet extends HttpServlet {
         try {
             // Lấy dữ liệu từ request
             int id = Integer.parseInt(request.getParameter("id"));
-            String taiKhoan = request.getParameter("tenTaiKhoan");
+            String taiKhoan = request.getParameter("taiKhoan");
             int idPhong = Integer.parseInt(request.getParameter("idPhong"));
+            
             Date ngayDat = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("ngayDat"));
             Date ngayDen = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("ngayDen"));
             Date ngayTra = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("ngayTra"));
@@ -207,8 +207,11 @@ public class AdminDatPhongServlet extends HttpServlet {
             int thanhTien = Integer.parseInt(request.getParameter("thanhTien"));
 
             // Tạo đối tượng DatPhong với thông tin mới
-            DatPhong datPhong = new DatPhong(id, taiKhoan, idPhong, new java.sql.Date(ngayDat.getTime()),
-                    new java.sql.Date(ngayDen.getTime()), new java.sql.Date(ngayTra.getTime()), dichVu, ghiChu, thanhTien, false);
+            DatPhong datPhong = new DatPhong(id, taiKhoan, idPhong,
+                    new java.sql.Date(ngayDat.getTime()),
+                    new java.sql.Date(ngayDen.getTime()),
+                    new java.sql.Date(ngayTra.getTime()),
+                    dichVu, ghiChu, thanhTien, false);
 
             // Cập nhật vào cơ sở dữ liệu
             boolean isUpdated = daoDatPhong.update(datPhong);
@@ -313,7 +316,7 @@ public class AdminDatPhongServlet extends HttpServlet {
                 cancelDatPhong(request, response);
                 break;
             case "remove":
-                removeDatPhong(request, response); 
+                removeDatPhong(request, response);
                 break;
             case "update":
                 showUpdateForm(request, response);

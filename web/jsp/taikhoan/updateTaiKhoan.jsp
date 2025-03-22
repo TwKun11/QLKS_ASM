@@ -14,7 +14,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">  
         <link rel="stylesheet" href="jsp/css/a_style_update.css"/>  
         <title>Cập Nhật Tài Khoản</title>  
-                <style>
+        <style>
             body {
                 font-family: Arial, sans-serif;
                 margin: 20px;
@@ -84,12 +84,24 @@
 
         <form action="taikhoans?action=update" method="post">   
             <label class="pad_top">Tên Tài Khoản:</label>  
-<input type="text" name="tenTaiKhoan" value="${taiKhoan.tenTaiKhoan}" disabled><br>
-
-
+            <input type="text" name="tenTaiKhoan_display" value="${taiKhoan.tenTaiKhoan}" disabled><br>
+            <input type="hidden" name="tenTaiKhoan" value="${taiKhoan.tenTaiKhoan}">
 
             <label class="pad_top">Mật Khẩu:</label>  
-            <input type="password" name="matKhau" value="${taiKhoan.matKhau}" required><br>  
+            <input type="password" id="matKhau" name="matKhau" value="${taiKhoan.matKhau}" required>  
+            <br>
+            <input type="checkbox" id="showPassword" onclick="togglePassword()"> Hiển thị mật khẩu  
+            <br>
+
+            <script>
+                function togglePassword() {
+                    var passwordInput = document.getElementById("matKhau");
+                    var showPasswordCheckbox = document.getElementById("showPassword");
+                    passwordInput.type = showPasswordCheckbox.checked ? "text" : "password";
+                }
+            </script>
+
+
 
             <label class="pad_top">Họ Tên:</label>  
             <input type="text" name="hoTen" value="${taiKhoan.hoTen}" required><br>  

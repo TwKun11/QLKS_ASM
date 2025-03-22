@@ -14,7 +14,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">  
         <link rel="stylesheet" href="jsp/css/a_style_update.css"/>  
         <title>Update Loại Khách Sạn</title>  
-                <style>
+        <style>
             body {
                 font-family: Arial, sans-serif;
                 margin: 20px;
@@ -77,8 +77,7 @@
     <body>
         <h2>Cập Nhật Thông Tin Phòng</h2>
 
-        <form action="phongs" method="post">
-            <input type="hidden" name="action" value="update">
+        <form action="phongs?action=update" method="post">
             <input type="hidden" name="id" value="${phong.id}">
 
             <label for="ten">Tên Phòng:</label>
@@ -97,14 +96,14 @@
             <textarea id="moTa" name="moTa" required>${phong.moTa}</textarea>
 
             <label for="loaiGiuong">Loại Giường:</label>
-            <input type="text" id="loaiGiuong" name="loaiGiuong" value="${phong.loaiGiuong}" required>
+            <input type="number" id="loaiGiuong" name="loaiGiuong" value="${phong.loaiGiuong}" required>
 
-            <label class="pad_top">Khách Sạn:</label>
-            <select name="tenKhachSan" required>
+            <label for="idKhachSan">Khách Sạn:</label>
+            <select name="idKhachSan" required>
                 <c:choose>
                     <c:when test="${not empty danhSachKhachSan}">
                         <c:forEach var="tp" items="${danhSachKhachSan}">
-                            <option value="${tp.ten}">${tp.ten}</option>
+                            <option value="${tp.id}" ${tp.id == phong.idKhachSan ? 'selected' : ''}>${tp.ten}</option>
                         </c:forEach>
                     </c:when>
                     <c:otherwise>
@@ -112,6 +111,7 @@
                     </c:otherwise>
                 </c:choose>
             </select><br>
+
 
             <button type="submit">Cập Nhật</button>
         </form>

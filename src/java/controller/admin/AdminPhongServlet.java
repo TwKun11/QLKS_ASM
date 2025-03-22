@@ -150,12 +150,11 @@ public class AdminPhongServlet extends HttpServlet {
         List<Phong> danhSach = daoPhong.getAll();
 
         List<Phong> ketQuaTimKiem = danhSach.stream()
-                .filter(ks -> ks.getTen().toLowerCase().contains(keyword.toLowerCase())
-                || ks.getTen().toLowerCase().contains(keyword.toLowerCase()))
+                .filter(p -> p.getTen().toLowerCase().contains(keyword.toLowerCase()))
                 .toList();
 
         request.setAttribute("phongs", ketQuaTimKiem);
-        request.getRequestDispatcher("jsp/khachsan/listPhong.jsp").forward(request, response);
+        request.getRequestDispatcher("jsp/phong/listPhong.jsp").forward(request, response);
     }
 
     private void showUpdateForm(HttpServletRequest request, HttpServletResponse response)
@@ -211,7 +210,8 @@ public class AdminPhongServlet extends HttpServlet {
             KhachSan khachSan = DAOKhachSan.getById(idKhachSan);
             if (khachSan == null) {
                 request.setAttribute("errorMessage", "Khách sạn không hợp lệ!");
-                showUpdateForm(request, response);
+                request.setAttribute("phong", existingPhong);
+                request.getRequestDispatcher("jsp/phongs/updatePhong.jsp").forward(request, response);
                 return;
             }
 
@@ -222,26 +222,22 @@ public class AdminPhongServlet extends HttpServlet {
             existingPhong.setTienNghi(tienNghi);
             existingPhong.setMoTa(moTa);
             existingPhong.setLoaiGiuong(loaiGiuong);
-            existingPhong.setIdKhachSan(khachSan.getId());
+            existingPhong.setIdKhachSan(idKhachSan);
+            existingPhong.setTenKhachSan(khachSan.getTen()); // Lấy tên khách sạn từ object KhachSan
+            existingPhong.setKhachSan(khachSan);
 
             // Thực hiện cập nhật
             boolean updateSuccess = daoPhong.update(existingPhong);
-
             if (updateSuccess) {
                 response.sendRedirect("phongs?action=list");
             } else {
                 request.setAttribute("errorMessage", "Lỗi khi cập nhật phòng!");
                 request.setAttribute("phong", existingPhong);
-                showUpdateForm(request, response);
+                request.getRequestDispatcher("jsp/phong/updatePhong.jsp").forward(request, response);
             }
-
         } catch (NumberFormatException e) {
             request.setAttribute("errorMessage", "Dữ liệu nhập không hợp lệ!");
-            showUpdateForm(request, response);
-        } catch (Exception e) {
-            e.printStackTrace();
-            request.setAttribute("errorMessage", "Lỗi khi cập nhật phòng!");
-            showUpdateForm(request, response);
+            request.getRequestDispatcher("jsp/phong/updatePhong.jsp").forward(request, response);
         }
     }
 
@@ -320,8 +316,8 @@ public class AdminPhongServlet extends HttpServlet {
             case "update":
                 updatePhong(request, response);
                 break;
-            default:
-                response.sendRedirect("phongs?action=list");
+            case "list":
+                listPhong(request, response);
                 break;
         }
     }

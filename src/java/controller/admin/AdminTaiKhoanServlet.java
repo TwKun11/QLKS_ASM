@@ -115,7 +115,7 @@ public class AdminTaiKhoanServlet extends HttpServlet {
         TaiKhoan taiKhoan = dAOTaiKhoan.getByTenTaiKhoan(tenTaiKhoan);
 
         if (taiKhoan != null) {
-            request.setAttribute("taikhoan", taiKhoan);
+            request.setAttribute("taiKhoan", taiKhoan);
             request.getRequestDispatcher("jsp/taikhoan/updateTaiKhoan.jsp").forward(request, response);
         } else {
             request.setAttribute("message", "Tài khoản không tồn tại!");
@@ -152,6 +152,20 @@ public class AdminTaiKhoanServlet extends HttpServlet {
             request.setAttribute("message", "Tài khoản không tồn tại!");
             request.getRequestDispatcher("jsp/taikhoan/updateTaiKhoan.jsp").forward(request, response);
         }
+    }
+    
+    private void searchTaiKhoan(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String keyword = request.getParameter("name");
+        List<TaiKhoan> danhSach = dAOTaiKhoan.getAll();
+
+        // Lọc danh sách thành phố theo từ khóa
+        List<TaiKhoan> ketQuaTimKiem = danhSach.stream()
+                .filter(taiKhoan -> taiKhoan.getTenTaiKhoan().toLowerCase().contains(keyword.toLowerCase()))
+                .toList();
+
+        request.setAttribute("taiKhoans", ketQuaTimKiem);
+        request.getRequestDispatcher("jsp/taikhoan/listTaiKhoan.jsp").forward(request, response);
     }
 
     /**
@@ -198,6 +212,9 @@ public class AdminTaiKhoanServlet extends HttpServlet {
         switch (action) {
             case "list":
                 listTaiKhoan(request, response);
+                break;
+            case "search":
+                searchTaiKhoan(request, response);
                 break;
             case "create":
                 showCreateForm(request, response);
