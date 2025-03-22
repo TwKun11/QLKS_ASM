@@ -25,6 +25,15 @@ import java.util.logging.Logger;
 import model.DatPhong;
 import model.Phong;
 import model.TaiKhoan;
+import jakarta.mail.Authenticator;
+import jakarta.mail.Message;
+import jakarta.mail.MessagingException;
+import jakarta.mail.PasswordAuthentication;
+import jakarta.mail.Session;
+import jakarta.mail.Transport;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
+import java.util.Properties;
 
 /**
  *
@@ -32,19 +41,9 @@ import model.TaiKhoan;
  */
 @WebServlet(name = "XacNhanDatPhong", urlPatterns = {"/xacnhandatphong"})
 public class XacNhanDatPhong extends HttpServlet {
-    
-    // Thêm instance của DAO
+
     private DAODatPhong daoDatPhong = new DAODatPhong();
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     private double tinhGiaThue(String giaMotDemStr, String ngayDenStr, String ngayTraStr) {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -52,40 +51,55 @@ public class XacNhanDatPhong extends HttpServlet {
             Date ngayTra = sdf.parse(ngayTraStr);
             long soNgay = (ngayTra.getTime() - ngayDen.getTime()) / (1000 * 60 * 60 * 24);
             int giaMotDem = Integer.parseInt(giaMotDemStr);
-            System.out.println("hello");
             return giaMotDem * Math.max(soNgay, 1);
         } catch (ParseException | NumberFormatException e) {
             e.printStackTrace();
-            return 0; // Trả về 0 nếu có lỗi
+            return 0;
         }
     }
 
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet XacNhanDatPhong</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet XacNhanDatPhong at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+    // Hàm gửi email
+    private void sendEmail(String toEmail, String tenPhong, String ngayDen, String ngayTra, int giaThue, int maDon) {
+        final String username = "atshqlks@gmail.com"; // Thay bằng email của bạn
+        final String password = "hqey tjfa spqx fjug";    // Thay bằng mật khẩu ứng dụng (nếu dùng Gmail)
+
+        Properties props = new Properties();
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
+
+        Session session = Session.getInstance(props, new jakarta.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(username, password);
+            }
+        });
+
+        try {
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(username));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail));
+            message.setSubject("Xác nhận đặt phòng thành công");
+            message.setText("Chào bạn,\n\n"
+                    + "Đặt phòng của bạn đã được xác nhận thành công!\n"
+                    + "Thông tin đặt phòng:\n"
+                    + "Phòng: " + tenPhong + "\n"
+                    + "Ngày đến: " + ngayDen + "\n"
+                    + "Ngày trả: " + ngayTra + "\n"
+                    + "Tổng tiền: " + giaThue + " VND\n"
+                    + "Mã đơn: " + maDon + "\n\n"
+                    + "Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi!\n"
+                    + "Trân trọng,\nĐội ngũ hỗ trợ");
+
+            Transport.send(message);
+            System.out.println("Email sent successfully to " + toEmail);
+
+        } catch (MessagingException e) {
+            e.printStackTrace();
+            System.out.println("Failed to send email: " + e.getMessage());
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -102,7 +116,6 @@ public class XacNhanDatPhong extends HttpServlet {
         String ngayTra = request.getParameter("ngayTra");
         String giaThueStr = request.getParameter("giaThue");
         int giaThue = (int) tinhGiaThue(giaThueStr, ngayDen, ngayTra);
-       
 
         if (idPhong == null || ngayDen == null || ngayTra == null) {
             request.setAttribute("error", "Dữ liệu không hợp lệ. Vui lòng thử lại.");
@@ -136,6 +149,7 @@ public class XacNhanDatPhong extends HttpServlet {
         String ngayDenStr = request.getParameter("ngayDen");
         String ngayTraStr = request.getParameter("ngayTra");
         String dichVu = request.getParameter("dichVu") != null ? request.getParameter("dichVu") : "Không có";
+        String tenPhong = request.getParameter("tenPhong");
 
         if (idPhong == null || ngayDenStr == null || ngayTraStr == null) {
             request.setAttribute("error", "Dữ liệu không hợp lệ. Vui lòng thử lại.");
@@ -147,7 +161,15 @@ public class XacNhanDatPhong extends HttpServlet {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Date ngayDen = sdf.parse(ngayDenStr);
             Date ngayTra = sdf.parse(ngayTraStr);
-            Date ngayDat = new Date(); // Lấy ngày hiện tại làm ngày đặt
+            Date ngayDat = new Date();
+
+            // Kiểm tra phòng có sẵn không trước khi đặt
+            boolean isAvailable = daoDatPhong.checkRoomAvailability(Integer.parseInt(idPhong), ngayDenStr, ngayTraStr);
+            if (!isAvailable) {
+                request.setAttribute("error", "Phòng đã được đặt trong khoảng thời gian này!");
+                request.getRequestDispatcher("/datphong/xacnhandatphong.jsp").forward(request, response);
+                return;
+            }
 
             DatPhong datPhong = new DatPhong();
             datPhong.setTaiKhoan(user.getTenTaiKhoan());
@@ -156,33 +178,33 @@ public class XacNhanDatPhong extends HttpServlet {
             datPhong.setNgayDen(ngayDen);
             datPhong.setNgayTra(ngayTra);
             datPhong.setDichVu(dichVu);
-            datPhong.setGhiChu("Thanh toán khi nhận phong");
-            datPhong.setThanhTien(giaThue); // Giá tạm thời, cần tính toán dựa vào DB
+            datPhong.setGhiChu("Thanh toán khi nhận phòng");
+            datPhong.setThanhTien(giaThue);
             datPhong.setDaHuy(false);
 
             boolean isInserted = daoDatPhong.insert(datPhong);
 
             if (isInserted) {
                 request.setAttribute("message", "Đặt phòng thành công! Mã đơn: " + datPhong.getId());
+                String userEmail = user.getEmail();
+                if (userEmail != null && !userEmail.isEmpty()) {
+                    sendEmail(userEmail, tenPhong, ngayDenStr, ngayTraStr, giaThue, datPhong.getId());
+                } else {
+                    System.out.println("User email not available.");
+                }
             } else {
                 request.setAttribute("error", "Đặt phòng thất bại! Vui lòng thử lại.");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("error", "Lỗi xử lý dữ liệu.");
+            request.setAttribute("error", "Lỗi xử lý dữ liệu: " + e.getMessage());
         }
 
         request.getRequestDispatcher("/datphong/datphongthanhcong.jsp").forward(request, response);
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
-
+    }
 }
