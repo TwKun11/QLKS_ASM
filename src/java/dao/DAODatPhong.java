@@ -220,7 +220,7 @@ public class DAODatPhong implements IDAODatPhong {
     }
 
     public int getMostBookedRoom() {
-        int mostBookedRoomId = -1;
+        int mostBookedRoomId = 0;
         try {
             con = SQLConnection.getConnection();
             String sql = "SELECT TOP 1 IdPhong FROM DatPhong GROUP BY IdPhong ORDER BY COUNT(*) DESC";

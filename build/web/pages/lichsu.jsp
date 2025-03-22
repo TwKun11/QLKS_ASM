@@ -107,7 +107,6 @@
         <%@ include file="/includes/header.jsp" %>
         <div class="">
             <h2>Lịch sử đặt phòng</h2>
-
             <c:if test="${empty bookings}">
                 <p style="color: red; text-align: center;">Không có đơn đặt phòng nào.</p>
             </c:if>

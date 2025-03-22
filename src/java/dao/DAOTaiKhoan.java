@@ -30,7 +30,7 @@ public class DAOTaiKhoan implements ITaiKhoanDAO {
             = "SELECT * FROM TaiKhoan WHERE TenTaiKhoan=?";
     private static final String SELECT_BY_EMAIL = "SELECT * FROM TaiKhoan WHERE Email = ?";
     private static final String GET_TOTAL_TAIKHOAN
-            = "SELECT COUNT(*) AS Total FROM TaiKhoan WHERE Status = 1 AND IdRole = 2";
+            = "SELECT COUNT(*) AS Total FROM TaiKhoan WHERE  IdRole = 2";
     private static Connection con;
 
     @Override
