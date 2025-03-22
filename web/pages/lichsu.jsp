@@ -97,7 +97,9 @@
             }
 
             /* Footer */
-
+            footer {
+                margin-top: auto;
+            }
         </style>
     </head>
     <body>
