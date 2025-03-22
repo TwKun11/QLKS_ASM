@@ -3,14 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/QLKS_ASM/src/java/controller/admin/AdminServlet.java</file>
-            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/QLKS_ASM/src/java/controller/admin/AdminLoaiKhachSanServlet.java</file>
-            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/QLKS_ASM/src/java/controller/admin/AdminPhongServlet.java</file>
-            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/QLKS_ASM/web/pages/lichsu.jsp</file>
-            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/QLKS_ASM/src/java/controller/admin/AdminThanhPhoServlet.java</file>
-            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/QLKS_ASM/src/java/controller/admin/AdminKhachSanServlet.java</file>
-            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/QLKS_ASM/src/java/controller/admin/AdminDatPhongServlet.java</file>
-            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/QLKS_ASM/src/java/controller/admin/AdminTaiKhoanServlet.java</file>
+            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/QLKS_ASM/src/java/constant/Iconstant.java</file>
         </group>
     </open-files>
 </project-private>

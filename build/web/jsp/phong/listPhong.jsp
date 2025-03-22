@@ -1,4 +1,4 @@
-<%-- 
+W<%-- 
     Document   : listThanhPho
     Created on : Feb 25, 2025, 8:39:53 PM
     Author     : Admin
@@ -232,6 +232,13 @@
                                 <td>${phong.giaThue}</td>
                                 <td>${phong.tienNghi}</td>
                                 <td>${phong.moTa}</td>
+                                <td>
+                                    <c:choose>
+                                        <c:when test="${phong.loaiGiuong == 0}">Giường đơn</c:when>
+                                        <c:when test="${phong.loaiGiuong == 1}">Giường đôi</c:when>
+                                        <c:otherwise>Không xác định</c:otherwise>
+                                    </c:choose>
+                                </td>
                                 <td>${phong.loaiGiuong}</td>
                                 <td>${phong.idKhachSan}</td>
                                 <td>

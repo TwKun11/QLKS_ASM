@@ -100,8 +100,10 @@
             <input type="text" name="moTa" required><br>  
 
             <label class="pad_top">Loại Giường:</label>  
-            <input type="text" name="loaiGiuong" required><br>  
-
+            <select name="loaiGiuong" required>
+                <option value="0">Giường đơn</option>
+                <option value="1">Giường đôi</option>
+            </select><br>
             <%-- Kiểm tra danh sách Thành phố --%>
             <c:if test="${empty danhSachKhachSan}">
                 <p style="color: red;">Lỗi: danhSachKhachSan không có dữ liệu.</p>

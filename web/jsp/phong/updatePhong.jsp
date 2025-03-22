@@ -94,9 +94,11 @@
 
             <label for="moTa">Mô Tả:</label>
             <textarea id="moTa" name="moTa" required>${phong.moTa}</textarea>
-
             <label for="loaiGiuong">Loại Giường:</label>
-            <input type="number" id="loaiGiuong" name="loaiGiuong" value="${phong.loaiGiuong}" required>
+            <select id="loaiGiuong" name="loaiGiuong" required>
+                <option value="0" ${phong.loaiGiuong == 0 ? 'selected' : ''}>Giường đơn</option>
+                <option value="1" ${phong.loaiGiuong == 1 ? 'selected' : ''}>Giường đôi</option>
+            </select>
 
             <label for="idKhachSan">Khách Sạn:</label>
             <select name="idKhachSan" required>
