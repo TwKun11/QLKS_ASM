@@ -10,9 +10,9 @@ package constant;
  */
 
 public class Iconstant {
-    public static final String GOOGLE_CLIENT_ID = "ib tao gửi riêng kh cho up key";
+    public static final String GOOGLE_CLIENT_ID = "gui rieng nhe";
 
-    public static final String GOOGLE_CLIENT_SECRET = "ib tao gửi riêng kh cho up key";
+    public static final String GOOGLE_CLIENT_SECRET = "gui rieng nhe cac ban";
 
     public static final String GOOGLE_REDIRECT_URI = "http://localhost:8080/roombooking/LoginServlet";
 

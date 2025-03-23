@@ -1,4 +1,4 @@
-W<%-- 
+<%-- 
     Document   : listThanhPho
     Created on : Feb 25, 2025, 8:39:53 PM
     Author     : Admin
@@ -239,7 +239,6 @@ W<%--
                                         <c:otherwise>Không xác định</c:otherwise>
                                     </c:choose>
                                 </td>
-                                <td>${phong.loaiGiuong}</td>
                                 <td>${phong.idKhachSan}</td>
                                 <td>
                                     <div style="display: flex; gap: 10px; align-items: center;">
