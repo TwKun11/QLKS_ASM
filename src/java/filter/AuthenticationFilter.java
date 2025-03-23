@@ -21,7 +21,7 @@ public class AuthenticationFilter extends HttpFilter {
     private static final List<String> PUBLIC_PREFIXES = Arrays.asList(
     "/products", "/assets/", "/pages/", "/home", "/khachsan", "/datphong",
     "/RegisterServlet", "/forgotPassword", "/verifyOTP", "/resetPassword", "/LoginServlet", "/logout",
-    "/Content/", "/payment", "/returnPayment", "/ChangePasswordServlet" // Thêm đường dẫn đến tài nguyên tĩnh
+    "/Content/", "/payment", "/returnPayment", "/ChangePasswordServlet" , "/chat"// Thêm đường dẫn đến tài nguyên tĩnh
 );
 
     // Danh sách các đường dẫn chỉ dành cho admin
