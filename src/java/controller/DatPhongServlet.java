@@ -1,26 +1,33 @@
 package controller;
 
-import dao.DAOKhachSan;
-import dao.DAOPhong;
-import jakarta.servlet.RequestDispatcher;
-import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import service.KhachSanService;
+import service.PhongService;
+import model.KhachSan;
+import model.Phong;
+
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import model.KhachSan;
-import model.Phong;
 
 @WebServlet(name = "DatPhongServlet", urlPatterns = {"/datphong"})
 public class DatPhongServlet extends HttpServlet {
     
-    // Thêm các instance của DAO
-    private DAOKhachSan daoKhachSan = new DAOKhachSan();
-    private DAOPhong daoPhong = new DAOPhong();
+    // Thêm các instance của Service
+    private KhachSanService khachSanService;
+    private PhongService phongService;
+
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        khachSanService = new KhachSanService();
+        phongService = new PhongService();
+    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -32,7 +39,7 @@ public class DatPhongServlet extends HttpServlet {
         }
 
         int id = Integer.parseInt(idParam);
-        KhachSan khachSan = daoKhachSan.getKhachSanById(id);
+        KhachSan khachSan = khachSanService.getById(id);
         if (khachSan != null) {
             request.setAttribute("khachSan", khachSan);
             request.getRequestDispatcher("/datphong/datphong.jsp").forward(request, response);
@@ -65,14 +72,14 @@ public class DatPhongServlet extends HttpServlet {
                 return;
             }
 
-            KhachSan khachSan = daoKhachSan.getKhachSanById(idKhachSan);
+            KhachSan khachSan = khachSanService.getById(idKhachSan);
             if (khachSan == null) {
                 request.setAttribute("message", "Không tìm thấy khách sạn.");
                 forwardToPage(request, response, idKhachSan);
                 return;
             }
 
-            List<Phong> danhSachPhong = daoPhong.layPhongTrong(idKhachSan, ngayDen, ngayTra);
+            List<Phong> danhSachPhong = phongService.layPhongTrong(idKhachSan, ngayDen, ngayTra);
 
             request.setAttribute("khachSan", khachSan);
             request.setAttribute("danhSachPhong", danhSachPhong);
@@ -88,7 +95,7 @@ public class DatPhongServlet extends HttpServlet {
 
     private void forwardToPage(HttpServletRequest request, HttpServletResponse response, int idKhachSan)
             throws ServletException, IOException {
-        KhachSan khachSan = daoKhachSan.getKhachSanById(idKhachSan);
+        KhachSan khachSan = khachSanService.getById(idKhachSan);
         if (khachSan != null) {
             request.setAttribute("khachSan", khachSan);
         }

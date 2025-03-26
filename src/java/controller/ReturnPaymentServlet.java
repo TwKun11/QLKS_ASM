@@ -1,11 +1,14 @@
 package controller;
 
-import dao.DAODatPhong;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import service.DatPhongService;
+import model.DatPhong;
+import model.TaiKhoan;
+
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,13 +19,17 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import model.DatPhong;
-import model.TaiKhoan;
 
 @WebServlet(name = "ReturnPaymentServlet", urlPatterns = {"/returnPayment"})
 public class ReturnPaymentServlet extends HttpServlet {
 
-    private DAODatPhong daoDatPhong = new DAODatPhong();
+    private DatPhongService datPhongService;
+
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        datPhongService = new DatPhongService();
+    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -91,7 +98,7 @@ public class ReturnPaymentServlet extends HttpServlet {
                 datPhong.setThanhTien(giaThue);
                 datPhong.setDaHuy(false);
 
-                boolean isInserted = daoDatPhong.insert(datPhong);
+                boolean isInserted = datPhongService.insert(datPhong);
                 if (isInserted) {
                     request.setAttribute("message", "Thanh toán và đặt phòng thành công! Mã đơn: " + datPhong.getId());
                 } else {

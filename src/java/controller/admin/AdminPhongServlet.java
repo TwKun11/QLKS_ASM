@@ -1,11 +1,11 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ * Click nbfs://SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 package controller.admin;
 
-import dao.DAOKhachSan;
-import dao.DAOPhong;
+import service.PhongService;
+import service.KhachSanService;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -24,17 +24,17 @@ import model.Phong;
 @WebServlet(name = "AdminPhongServlet", urlPatterns = {"/phongs"})
 public class AdminPhongServlet extends HttpServlet {
 
-    private DAOPhong daoPhong;
-    DAOKhachSan DAOKhachSan = new DAOKhachSan();
+    private PhongService phongService;
+    private KhachSanService khachSanService = new KhachSanService();
 
     @Override
     public void init() throws ServletException {
-        daoPhong = new DAOPhong();
+        phongService = new PhongService();
     }
 
     private void listPhong(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<Phong> danhSach = daoPhong.getAll();
+        List<Phong> danhSach = phongService.getAll();
         request.setAttribute("phongs", danhSach);
         request.getRequestDispatcher("jsp/phong/listPhong.jsp").forward(request, response);
     }
@@ -43,18 +43,17 @@ public class AdminPhongServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             // Lấy danh sách Khách Sạn
-            List<KhachSan> danhSachKhachSan = DAOKhachSan.getAll();
+            List<KhachSan> danhSachKhachSan = khachSanService.getAll();
             request.setAttribute("danhSachKhachSan", danhSachKhachSan);
 
             // Kiểm tra dữ liệu có tồn tại không
-            if (danhSachKhachSan == null || danhSachKhachSan.isEmpty()
-                    || danhSachKhachSan == null || danhSachKhachSan.isEmpty()) {
+            if (danhSachKhachSan == null || danhSachKhachSan.isEmpty()) {
                 request.setAttribute("errorMessage", "Không có dữ liệu cần thiết để tạo khách sạn.");
                 request.getRequestDispatcher("phongs?action=list").forward(request, response);
                 return;
             }
 
-            // Chuyển đến trang JSP tạo khách sạn
+            // Chuyển đến trang JSP tạo phòng
             request.getRequestDispatcher("jsp/phong/createPhong.jsp").forward(request, response);
         } catch (Exception e) {
             log("Lỗi khi hiển thị form tạo phòng: " + e.getMessage(), e);
@@ -94,7 +93,7 @@ public class AdminPhongServlet extends HttpServlet {
             }
 
             // Lấy thông tin khách sạn từ tên
-            KhachSan khachSan = DAOKhachSan.getByName(tenKhachSan);
+            KhachSan khachSan = khachSanService.getByName(tenKhachSan);
             if (khachSan == null) {
                 request.setAttribute("errorMessage", "Khách sạn không tồn tại!");
                 showCreateForm(request, response);
@@ -106,8 +105,8 @@ public class AdminPhongServlet extends HttpServlet {
             // Tạo đối tượng Phòng
             Phong phong = new Phong(0, ten, dienTich, giaThue, tienNghi, moTa, loaiGiuong, idKhachSan, tenKhachSan);
 
-            // Thêm vào cơ sở dữ liệu
-            daoPhong.insert(phong);
+            // Thêm vào cơ sở dữ liệu qua service
+            phongService.insert(phong);
 
             // Chuyển hướng về danh sách phòng sau khi thêm thành công
             response.sendRedirect("phongs?action=list");
@@ -147,7 +146,7 @@ public class AdminPhongServlet extends HttpServlet {
     private void searchPhong(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String keyword = request.getParameter("name");
-        List<Phong> danhSach = daoPhong.getAll();
+        List<Phong> danhSach = phongService.getAll();
 
         List<Phong> ketQuaTimKiem = danhSach.stream()
                 .filter(p -> p.getTen().toLowerCase().contains(keyword.toLowerCase()))
@@ -161,7 +160,7 @@ public class AdminPhongServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             int id = Integer.parseInt(request.getParameter("id"));
-            Phong phong = daoPhong.getById(id);
+            Phong phong = phongService.getById(id);
 
             if (phong == null) {
                 request.setAttribute("errorMessage", "Phòng không tồn tại!");
@@ -170,7 +169,7 @@ public class AdminPhongServlet extends HttpServlet {
             }
 
             // Lấy danh sách Khách sạn
-            List<KhachSan> danhSachKhachSan = DAOKhachSan.getAll();
+            List<KhachSan> danhSachKhachSan = khachSanService.getAll();
 
             request.setAttribute("phong", phong);
             request.setAttribute("danhSachKhachSan", danhSachKhachSan);
@@ -189,7 +188,7 @@ public class AdminPhongServlet extends HttpServlet {
     private void updatePhong(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         try {
             int id = Integer.parseInt(request.getParameter("id"));
-            Phong existingPhong = daoPhong.getById(id);
+            Phong existingPhong = phongService.getById(id);
 
             if (existingPhong == null) {
                 request.setAttribute("errorMessage", "Phòng không tồn tại!");
@@ -207,11 +206,11 @@ public class AdminPhongServlet extends HttpServlet {
             int idKhachSan = Integer.parseInt(request.getParameter("idKhachSan"));
 
             // Kiểm tra ID Khách sạn có hợp lệ không
-            KhachSan khachSan = DAOKhachSan.getById(idKhachSan);
+            KhachSan khachSan = khachSanService.getById(idKhachSan);
             if (khachSan == null) {
                 request.setAttribute("errorMessage", "Khách sạn không hợp lệ!");
                 request.setAttribute("phong", existingPhong);
-                request.getRequestDispatcher("jsp/phongs/updatePhong.jsp").forward(request, response);
+                request.getRequestDispatcher("jsp/phong/updatePhong.jsp").forward(request, response);
                 return;
             }
 
@@ -226,8 +225,8 @@ public class AdminPhongServlet extends HttpServlet {
             existingPhong.setTenKhachSan(khachSan.getTen()); // Lấy tên khách sạn từ object KhachSan
             existingPhong.setKhachSan(khachSan);
 
-            // Thực hiện cập nhật
-            boolean updateSuccess = daoPhong.update(existingPhong);
+            // Thực hiện cập nhật qua service
+            boolean updateSuccess = phongService.update(existingPhong);
             if (updateSuccess) {
                 response.sendRedirect("phongs?action=list");
             } else {
@@ -247,8 +246,8 @@ public class AdminPhongServlet extends HttpServlet {
             // Lấy ID từ request
             int id = Integer.parseInt(request.getParameter("id"));
 
-            // Gọi hàm delete trong DAO
-            boolean isDeleted = daoPhong.delete(id);
+            // Gọi hàm delete trong service
+            boolean isDeleted = phongService.delete(id);
 
             if (!isDeleted) {
                 request.setAttribute("errorMessage", "Xóa vĩnh viễn thất bại!");

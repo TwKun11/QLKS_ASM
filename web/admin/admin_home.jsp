@@ -130,7 +130,7 @@
         <div class="container">
             <!-- User Info -->
             <div class="user-info">
-                <p><b>${sessionScope.account.tenTaiKhoan}</b></p>
+                <p><b>${sessionScope.user.tenTaiKhoan}</b></p>
                 <p>Chào mừng bạn trở lại</p>
             </div>
 

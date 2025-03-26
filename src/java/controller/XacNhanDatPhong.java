@@ -1,31 +1,19 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nonatomic/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package controller;
 
-import dao.DAODatPhong;
-import dao.DAOPhong;
-import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import service.DatPhongService;
+import model.DatPhong;
+import model.TaiKhoan;
+
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import model.DatPhong;
-import model.Phong;
-import model.TaiKhoan;
-import jakarta.mail.Authenticator;
 import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
 import jakarta.mail.PasswordAuthentication;
@@ -42,7 +30,13 @@ import java.util.Properties;
 @WebServlet(name = "XacNhanDatPhong", urlPatterns = {"/xacnhandatphong"})
 public class XacNhanDatPhong extends HttpServlet {
 
-    private DAODatPhong daoDatPhong = new DAODatPhong();
+    private DatPhongService datPhongService;
+
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        datPhongService = new DatPhongService();
+    }
 
     private double tinhGiaThue(String giaMotDemStr, String ngayDenStr, String ngayTraStr) {
         try {
@@ -164,7 +158,7 @@ public class XacNhanDatPhong extends HttpServlet {
             Date ngayDat = new Date();
 
             // Kiểm tra phòng có sẵn không trước khi đặt
-            boolean isAvailable = daoDatPhong.checkRoomAvailability(Integer.parseInt(idPhong), ngayDenStr, ngayTraStr);
+            boolean isAvailable = datPhongService.checkRoomAvailability(Integer.parseInt(idPhong), ngayDenStr, ngayTraStr);
             if (!isAvailable) {
                 request.setAttribute("error", "Phòng đã được đặt trong khoảng thời gian này!");
                 request.getRequestDispatcher("/datphong/xacnhandatphong.jsp").forward(request, response);
@@ -182,7 +176,7 @@ public class XacNhanDatPhong extends HttpServlet {
             datPhong.setThanhTien(giaThue);
             datPhong.setDaHuy(false);
 
-            boolean isInserted = daoDatPhong.insert(datPhong);
+            boolean isInserted = datPhongService.insert(datPhong);
 
             if (isInserted) {
                 request.setAttribute("message", "Đặt phòng thành công! Mã đơn: " + datPhong.getId());

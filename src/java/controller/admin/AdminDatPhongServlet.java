@@ -4,9 +4,9 @@
  */
 package controller.admin;
 
-import dao.DAODatPhong;
-import dao.DAOPhong;
-import dao.DAOTaiKhoan;
+import service.DatPhongService;
+import service.PhongService;
+import service.TaiKhoanService;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -29,19 +29,18 @@ import model.TaiKhoan;
 @WebServlet(name = "AdminDatPhongServlet", urlPatterns = {"/datphongs"})
 public class AdminDatPhongServlet extends HttpServlet {
 
-    private DAODatPhong daoDatPhong;
-    DAOPhong daoPhong = new DAOPhong();
-    DAOTaiKhoan daoTaiKhoan = new DAOTaiKhoan();
+    private DatPhongService datPhongService;
+    private PhongService phongService = new PhongService();
+    private TaiKhoanService taiKhoanService = new TaiKhoanService();
 
     @Override
     public void init() throws ServletException {
-        daoDatPhong = new DAODatPhong();
-
+        datPhongService = new DatPhongService();
     }
 
     private void listDatPhong(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<DatPhong> danhSach = daoDatPhong.getAll();
+        List<DatPhong> danhSach = datPhongService.getAll();
         request.setAttribute("datphongs", danhSach);
         request.getRequestDispatcher("jsp/datphong/listDatPhong.jsp").forward(request, response);
     }
@@ -49,11 +48,11 @@ public class AdminDatPhongServlet extends HttpServlet {
     private void showCreateForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            // Lấy danh sách Khách Sạn
-            List<Phong> danhSachPhong = daoPhong.getAll();
+            // Lấy danh sách Phòng
+            List<Phong> danhSachPhong = phongService.getAll();
             request.setAttribute("danhSachPhong", danhSachPhong);
 
-            List<TaiKhoan> danhSachTaiKhoan = daoTaiKhoan.getAll();
+            List<TaiKhoan> danhSachTaiKhoan = taiKhoanService.getAll();
             request.setAttribute("danhSachTaiKhoan", danhSachTaiKhoan);
 
             // Kiểm tra dữ liệu có tồn tại không
@@ -69,7 +68,7 @@ public class AdminDatPhongServlet extends HttpServlet {
                 return;
             }
 
-            // Chuyển đến trang JSP tạo khách sạn
+            // Chuyển đến trang JSP tạo đặt phòng
             request.getRequestDispatcher("jsp/datphong/createDatPhong.jsp").forward(request, response);
         } catch (Exception e) {
             log("Lỗi khi hiển thị form đặt phòng: " + e.getMessage(), e);
@@ -113,7 +112,7 @@ public class AdminDatPhongServlet extends HttpServlet {
             }
 
             // Kiểm tra xem phòng có tồn tại không
-            Phong phong = daoPhong.getById(idPhong);
+            Phong phong = phongService.getById(idPhong);
             if (phong == null) {
                 request.setAttribute("errorMessage", "Phòng không tồn tại!");
                 showCreateForm(request, response);
@@ -123,8 +122,8 @@ public class AdminDatPhongServlet extends HttpServlet {
             // Tạo đối tượng Đặt Phòng
             DatPhong datPhong = new DatPhong(0, taiKhoan, idPhong, ngayDat, ngayDen, ngayTra, dichVu, ghiChu, thanhTien, false);
 
-            // Thêm vào cơ sở dữ liệu
-            daoDatPhong.insert(datPhong);
+            // Thêm vào cơ sở dữ liệu qua service
+            datPhongService.insert(datPhong);
 
             // Chuyển hướng về danh sách đặt phòng sau khi thêm thành công
             response.sendRedirect("datphongs?action=list");
@@ -139,7 +138,7 @@ public class AdminDatPhongServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             int id = Integer.parseInt(request.getParameter("id"));
-            daoDatPhong.update(id);
+            datPhongService.update(id);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -149,7 +148,7 @@ public class AdminDatPhongServlet extends HttpServlet {
     private void searchDatPhong(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String keyword = request.getParameter("name");
-        List<DatPhong> danhSach = daoDatPhong.getAll();
+        List<DatPhong> danhSach = datPhongService.getAll();
 
         List<DatPhong> ketQuaTimKiem = danhSach.stream()
                 .filter(ks -> ks.getTaiKhoan().toLowerCase().contains(keyword.toLowerCase()))
@@ -165,8 +164,8 @@ public class AdminDatPhongServlet extends HttpServlet {
             // Lấy ID từ request
             int id = Integer.parseInt(request.getParameter("id"));
 
-            // Lấy thông tin đặt phòng từ DAO
-            DatPhong datPhong = daoDatPhong.getByID(id);
+            // Lấy thông tin đặt phòng từ service
+            DatPhong datPhong = datPhongService.getByID(id);
 
             if (datPhong == null) {
                 request.setAttribute("errorMessage", "Không tìm thấy thông tin đặt phòng!");
@@ -175,8 +174,8 @@ public class AdminDatPhongServlet extends HttpServlet {
             }
 
             // Lấy danh sách phòng và tài khoản để hiển thị trong dropdown
-            List<Phong> danhSachPhong = daoPhong.getAll();
-            List<TaiKhoan> danhSachTaiKhoan = daoTaiKhoan.getAll();
+            List<Phong> danhSachPhong = phongService.getAll();
+            List<TaiKhoan> danhSachTaiKhoan = taiKhoanService.getAll();
 
             // Gửi dữ liệu lên JSP
             request.setAttribute("datPhong", datPhong);
@@ -198,7 +197,7 @@ public class AdminDatPhongServlet extends HttpServlet {
             int id = Integer.parseInt(request.getParameter("id"));
             String taiKhoan = request.getParameter("taiKhoan");
             int idPhong = Integer.parseInt(request.getParameter("idPhong"));
-            
+
             Date ngayDat = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("ngayDat"));
             Date ngayDen = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("ngayDen"));
             Date ngayTra = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("ngayTra"));
@@ -213,8 +212,8 @@ public class AdminDatPhongServlet extends HttpServlet {
                     new java.sql.Date(ngayTra.getTime()),
                     dichVu, ghiChu, thanhTien, false);
 
-            // Cập nhật vào cơ sở dữ liệu
-            boolean isUpdated = daoDatPhong.update(datPhong);
+            // Cập nhật vào cơ sở dữ liệu qua service
+            boolean isUpdated = datPhongService.update(datPhong);
 
             if (!isUpdated) {
                 request.setAttribute("errorMessage", "Cập nhật thất bại!");
@@ -240,8 +239,8 @@ public class AdminDatPhongServlet extends HttpServlet {
             // Lấy ID từ request
             int id = Integer.parseInt(request.getParameter("id"));
 
-            // Gọi hàm remove trong DAO
-            boolean isRemoved = daoDatPhong.delete(id);
+            // Gọi hàm remove trong service
+            boolean isRemoved = datPhongService.delete(id);
 
             if (!isRemoved) {
                 request.setAttribute("errorMessage", "Xóa vĩnh viễn thất bại!");
@@ -320,6 +319,7 @@ public class AdminDatPhongServlet extends HttpServlet {
                 break;
             case "update":
                 showUpdateForm(request, response);
+                break;
             default:
                 listDatPhong(request, response);
                 break;

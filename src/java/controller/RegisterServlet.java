@@ -1,12 +1,12 @@
 package controller;
 
-import dao.DAOTaiKhoan;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import service.TaiKhoanService;
 import model.TaiKhoan;
 import utils.EmailUtility;
 import utils.OTPGenerator;
@@ -18,6 +18,15 @@ import java.util.regex.Pattern;
 @WebServlet(name = "RegisterServlet", urlPatterns = {"/RegisterServlet"})
 public class RegisterServlet extends HttpServlet {
     
+    private TaiKhoanService taiKhoanService;
+
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        taiKhoanService = new TaiKhoanService();
+    }
+
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
@@ -62,9 +71,8 @@ public class RegisterServlet extends HttpServlet {
             return;
         }
 
-        DAOTaiKhoan dao = new DAOTaiKhoan();
         try {
-            if (dao.getByTenTaiKhoan(username) != null) {
+            if (taiKhoanService.getByTenTaiKhoan(username) != null) {
                 request.setAttribute("errorRegister", "Tên tài khoản đã tồn tại!");
                 request.getRequestDispatcher("/pages/register.jsp").forward(request, response);
                 return;

@@ -5,9 +5,8 @@
  */
 package controller.admin;
 
-import dao.DAODatPhong;
-import dao.DAOPhong;
-import dao.DAOTaiKhoan;
+import service.DatPhongService;
+import service.TaiKhoanService;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -56,15 +55,15 @@ public class AdminServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        DAODatPhong dpDao = new DAODatPhong();
-        DAOTaiKhoan tkDao = new DAOTaiKhoan();
+        DatPhongService dpService = new DatPhongService();
+        TaiKhoanService tkService = new TaiKhoanService();
 
         String url = ADMIN;
         try {
-            int mostbookerroom = dpDao.getMostBookedRoom();
-            int totalUsers = tkDao.getTotalTaiKhoan();
-            int totalRevenue = dpDao.getTotalRevenue();
-            int bookedRoomCount = dpDao.getBookedRoomCount();
+            int mostbookerroom = dpService.getMostBookedRoom();
+            int totalUsers = tkService.getTotalTaiKhoan();
+            int totalRevenue = dpService.getTotalRevenue();
+            int bookedRoomCount = dpService.getBookedRoomCount();
             log("Total Users: " + totalUsers);
 
             request.setAttribute("MOSTBOOKERROOM", mostbookerroom);

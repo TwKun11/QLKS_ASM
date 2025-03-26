@@ -1,25 +1,19 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package controller;
 
-import dao.DAODatPhong;
-import dao.SQLConnection;
-import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import service.DatPhongService;
 import model.DatPhong;
 import model.TaiKhoan;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -27,12 +21,18 @@ import model.TaiKhoan;
  */
 @WebServlet(name = "HuyDatPhongServlet", urlPatterns = "/huydatphong")
 public class HuyDatPhongServlet extends HttpServlet {
-    DAODatPhong daoDatPhong = new DAODatPhong();
+    private DatPhongService datPhongService;
+
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        datPhongService = new DatPhongService();
+    }
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
@@ -46,7 +46,8 @@ public class HuyDatPhongServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
         HttpSession session = request.getSession(false); // Không tạo session mới nếu chưa có
         if (session == null || session.getAttribute("user") == null) {
             response.sendRedirect("/pages/login.jsp");
@@ -57,7 +58,7 @@ public class HuyDatPhongServlet extends HttpServlet {
         System.out.println("[DEBUG] Username from session: " + username);
 
         try {
-            List<DatPhong> bookings = daoDatPhong.getAllByUser(username);
+            List<DatPhong> bookings = datPhongService.getAllByUser(username);
             if (bookings == null) {
                 bookings = new ArrayList<>();
             }
@@ -74,7 +75,6 @@ public class HuyDatPhongServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("user") == null) {
             response.sendRedirect(request.getContextPath() + "/pages/login.jsp");
@@ -94,12 +94,12 @@ public class HuyDatPhongServlet extends HttpServlet {
         }
 
         String message = "Hủy đặt phòng thất bại!";
-        try (Connection conn = SQLConnection.getConnection()) {
-            if (daoDatPhong.update(id)) {
+        try {
+            if (datPhongService.update(id)) {
                 message = "Hủy đặt phòng thành công!";
             }
 
-            List<DatPhong> bookings = daoDatPhong.getAllByUser(username);
+            List<DatPhong> bookings = datPhongService.getAllByUser(username);
             if (bookings == null) {
                 bookings = new ArrayList<>();
             }
@@ -107,16 +107,14 @@ public class HuyDatPhongServlet extends HttpServlet {
             request.setAttribute("bookings", bookings);
             request.setAttribute("message", message);
             request.getRequestDispatcher("/pages/lichsu.jsp").forward(request, response);
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             response.sendRedirect("error.jsp");
         }
-
     }
 
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
-
+    }
 }

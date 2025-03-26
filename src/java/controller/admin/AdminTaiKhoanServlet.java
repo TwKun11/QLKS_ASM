@@ -1,10 +1,10 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ * Click nbfs://SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 package controller.admin;
 
-import dao.DAOTaiKhoan;
+import service.TaiKhoanService;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -26,16 +26,16 @@ import model.TaiKhoan;
 @WebServlet(name = "AdminTaiKhoanServlet", urlPatterns = {"/taikhoans"})
 public class AdminTaiKhoanServlet extends HttpServlet {
 
-    private DAOTaiKhoan dAOTaiKhoan;
+    private TaiKhoanService taiKhoanService;
 
     @Override
     public void init() throws ServletException {
-        dAOTaiKhoan = new DAOTaiKhoan();
+        taiKhoanService = new TaiKhoanService();
     }
 
     private void listTaiKhoan(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<TaiKhoan> danhSach = dAOTaiKhoan.getAll();
+        List<TaiKhoan> danhSach = taiKhoanService.getAll();
 
         int pageSize = 10; // Số lượng tài khoản trên mỗi trang
         int totalTaiKhoans = danhSach.size();
@@ -74,7 +74,7 @@ public class AdminTaiKhoanServlet extends HttpServlet {
         request.getRequestDispatcher("jsp/taikhoan/createTaiKhoan.jsp").forward(request, response);
     }
 
-    // Thêm loại khách sạn
+    // Thêm tài khoản
     protected void create(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Lấy các tham số từ form
         String tenTaiKhoan = request.getParameter("tenTaiKhoan");
@@ -95,7 +95,7 @@ public class AdminTaiKhoanServlet extends HttpServlet {
         taiKhoan.setEmail(email);
         taiKhoan.setIdRole(idRole);
 
-        boolean isSuccess = dAOTaiKhoan.insert(taiKhoan);
+        boolean isSuccess = taiKhoanService.insert(taiKhoan);
 
         // Xử lý kết quả và điều hướng
         if (isSuccess) {
@@ -112,7 +112,7 @@ public class AdminTaiKhoanServlet extends HttpServlet {
     private void showUpdateForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
         String tenTaiKhoan = request.getParameter("tenTaiKhoan");
-        TaiKhoan taiKhoan = dAOTaiKhoan.getByTenTaiKhoan(tenTaiKhoan);
+        TaiKhoan taiKhoan = taiKhoanService.getByTenTaiKhoan(tenTaiKhoan);
 
         if (taiKhoan != null) {
             request.setAttribute("taiKhoan", taiKhoan);
@@ -145,8 +145,8 @@ public class AdminTaiKhoanServlet extends HttpServlet {
             taiKhoan.setEmail(email);
             taiKhoan.setIdRole(idRole);
 
-            // Gọi DAO để cập nhật dữ liệu trong DB
-            dAOTaiKhoan.update(taiKhoan);
+            // Gọi Service để cập nhật dữ liệu trong DB
+            taiKhoanService.update(taiKhoan);
             response.sendRedirect("taikhoans?action=list");
         } else {
             request.setAttribute("message", "Tài khoản không tồn tại!");
@@ -157,9 +157,9 @@ public class AdminTaiKhoanServlet extends HttpServlet {
     private void searchTaiKhoan(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String keyword = request.getParameter("name");
-        List<TaiKhoan> danhSach = dAOTaiKhoan.getAll();
+        List<TaiKhoan> danhSach = taiKhoanService.getAll();
 
-        // Lọc danh sách thành phố theo từ khóa
+        // Lọc danh sách tài khoản theo từ khóa
         List<TaiKhoan> ketQuaTimKiem = danhSach.stream()
                 .filter(taiKhoan -> taiKhoan.getTenTaiKhoan().toLowerCase().contains(keyword.toLowerCase()))
                 .toList();

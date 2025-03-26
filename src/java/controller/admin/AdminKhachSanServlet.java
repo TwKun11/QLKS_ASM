@@ -4,9 +4,9 @@
  */
 package controller.admin;
 
-import dao.DAOKhachSan;
-import dao.DAOLoaiKhachSan;
-import dao.DAOThanhPho;
+import service.KhachSanService;
+import service.ThanhPhoService;
+import service.LoaiKhachSanService;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -27,18 +27,18 @@ import model.ThanhPho;
 @WebServlet(name = "AdminKhachSanServlet", urlPatterns = {"/khachsans"})
 public class AdminKhachSanServlet extends HttpServlet {
 
-    private DAOKhachSan daoKhachSan;
-    DAOThanhPho DAOThanhPho = new DAOThanhPho();
-    DAOLoaiKhachSan DAOLoaiKhachSan = new DAOLoaiKhachSan();
+    private KhachSanService khachSanService;
+    private ThanhPhoService thanhPhoService = new ThanhPhoService();
+    private LoaiKhachSanService loaiKhachSanService = new LoaiKhachSanService();
 
     @Override
     public void init() throws ServletException {
-        daoKhachSan = new DAOKhachSan();
+        khachSanService = new KhachSanService();
     }
 
     private void listKhachSan(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<KhachSan> danhSach = daoKhachSan.getAll();
+        List<KhachSan> danhSach = khachSanService.getAll();
         request.setAttribute("khachsans", danhSach);
         request.getRequestDispatcher("jsp/khachsan/listKhachSan.jsp").forward(request, response);
     }
@@ -47,11 +47,11 @@ public class AdminKhachSanServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             // Lấy danh sách Thành phố
-            List<ThanhPho> danhSachThanhPho = DAOThanhPho.getAll();
+            List<ThanhPho> danhSachThanhPho = thanhPhoService.getAll();
             request.setAttribute("danhSachThanhPho", danhSachThanhPho);
 
             // Lấy danh sách Loại khách sạn
-            List<LoaiKhachSan> danhSachLoaiKhachSan = DAOLoaiKhachSan.getAll();
+            List<LoaiKhachSan> danhSachLoaiKhachSan = loaiKhachSanService.getAll();
             request.setAttribute("danhSachLoaiKhachSan", danhSachLoaiKhachSan);
 
             // Kiểm tra dữ liệu có tồn tại không
@@ -86,8 +86,8 @@ public class AdminKhachSanServlet extends HttpServlet {
             String urlHinhAnhThanhPho = request.getParameter("urlHinhAnhThanhPho");
 
             // Lấy ID từ tên của Thành Phố và Loại Khách Sạn
-            ThanhPho thanhPho = DAOThanhPho.getByName(tenThanhPho);
-            LoaiKhachSan loaiKhachSan = DAOLoaiKhachSan.getByName(tenLoaiKhachSan);
+            ThanhPho thanhPho = thanhPhoService.getByName(tenThanhPho);
+            LoaiKhachSan loaiKhachSan = loaiKhachSanService.getByName(tenLoaiKhachSan);
 
             if (thanhPho == null || loaiKhachSan == null) {
                 request.setAttribute("errorMessage", "Thành phố hoặc loại khách sạn không hợp lệ!");
@@ -101,8 +101,8 @@ public class AdminKhachSanServlet extends HttpServlet {
             // Tạo đối tượng khách sạn
             KhachSan ks = new KhachSan(0, ten, diaChi, soDienThoai, cachTrungTam, moTa, giapBien, danhGia, buaAn, idThanhPho, tenThanhPho, idLoaiKhachSan, tenLoaiKhachSan, urlHinhAnhThanhPho);
 
-            // Lưu vào DB
-            daoKhachSan.insert(ks);
+            // Lưu vào DB qua service
+            khachSanService.insert(ks);
 
             // Chuyển hướng về danh sách
             response.sendRedirect("khachsans?action=list");
@@ -116,11 +116,11 @@ public class AdminKhachSanServlet extends HttpServlet {
     private void searchKhachSan(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String keyword = request.getParameter("name");
-        List<KhachSan> danhSach = daoKhachSan.getAll();
+        List<KhachSan> danhSach = khachSanService.getAll();
 
         List<KhachSan> ketQuaTimKiem = danhSach.stream()
                 .filter(ks -> ks.getTen().toLowerCase().contains(keyword.toLowerCase())
-                || ks.getDiaChi().toLowerCase().contains(keyword.toLowerCase()))
+                        || ks.getDiaChi().toLowerCase().contains(keyword.toLowerCase()))
                 .toList();
 
         request.setAttribute("khachsans", ketQuaTimKiem);
@@ -130,7 +130,7 @@ public class AdminKhachSanServlet extends HttpServlet {
     private void updateKhachSan(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         try {
             int id = Integer.parseInt(request.getParameter("id"));
-            KhachSan existingKhachSan = daoKhachSan.getById(id);
+            KhachSan existingKhachSan = khachSanService.getById(id);
 
             if (existingKhachSan == null) {
                 request.setAttribute("errorMessage", "Khách sạn không tồn tại!");
@@ -151,8 +151,8 @@ public class AdminKhachSanServlet extends HttpServlet {
             String urlHinhAnhThanhPho = request.getParameter("urlHinhAnhThanhPho");
 
             // Lấy ID của Thành phố và Loại khách sạn
-            ThanhPho thanhPho = DAOThanhPho.getByName(tenThanhPho);
-            LoaiKhachSan loaiKhachSan = DAOLoaiKhachSan.getByName(tenLoaiKhachSan);
+            ThanhPho thanhPho = thanhPhoService.getByName(tenThanhPho);
+            LoaiKhachSan loaiKhachSan = loaiKhachSanService.getByName(tenLoaiKhachSan);
 
             if (thanhPho == null || loaiKhachSan == null) {
                 request.setAttribute("errorMessage", "Thành phố hoặc loại khách sạn không hợp lệ!");
@@ -175,7 +175,7 @@ public class AdminKhachSanServlet extends HttpServlet {
             existingKhachSan.setTenLoaiKhachSan(tenLoaiKhachSan);
             existingKhachSan.setUrlHinhAnhThanhPho(urlHinhAnhThanhPho);
 
-            daoKhachSan.update(existingKhachSan);
+            khachSanService.update(existingKhachSan);
 
             response.sendRedirect("khachsans?action=list");
         } catch (NumberFormatException e) {
@@ -192,7 +192,7 @@ public class AdminKhachSanServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             int id = Integer.parseInt(request.getParameter("id"));
-            KhachSan khachSan = daoKhachSan.getById(id);
+            KhachSan khachSan = khachSanService.getById(id);
 
             if (khachSan == null) {
                 request.setAttribute("errorMessage", "Khách sạn không tồn tại!");
@@ -201,8 +201,8 @@ public class AdminKhachSanServlet extends HttpServlet {
             }
 
             // Lấy danh sách Thành phố và Loại khách sạn để hiển thị trong form
-            List<ThanhPho> danhSachThanhPho = DAOThanhPho.getAll();
-            List<LoaiKhachSan> danhSachLoaiKhachSan = DAOLoaiKhachSan.getAll();
+            List<ThanhPho> danhSachThanhPho = thanhPhoService.getAll();
+            List<LoaiKhachSan> danhSachLoaiKhachSan = loaiKhachSanService.getAll();
 
             request.setAttribute("khachSan", khachSan);
             request.setAttribute("danhSachThanhPho", danhSachThanhPho);
@@ -225,8 +225,8 @@ public class AdminKhachSanServlet extends HttpServlet {
             // Lấy ID từ request
             int id = Integer.parseInt(request.getParameter("id"));
 
-            // Gọi hàm delete trong DAO
-            boolean isDeleted = daoKhachSan.delete(id);
+            // Gọi hàm delete trong service
+            boolean isDeleted = khachSanService.delete(id);
 
             if (!isDeleted) {
                 request.setAttribute("errorMessage", "Xóa vĩnh viễn thất bại!");

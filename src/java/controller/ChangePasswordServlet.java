@@ -9,12 +9,19 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import model.TaiKhoan;
-import dao.DAOTaiKhoan;
+import service.TaiKhoanService;
 
 @WebServlet("/ChangePasswordServlet")
 public class ChangePasswordServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    
+    private TaiKhoanService taiKhoanService;
+
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        taiKhoanService = new TaiKhoanService();
+    }
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
@@ -30,8 +37,7 @@ public class ChangePasswordServlet extends HttpServlet {
         String confirmPassword = request.getParameter("confirmPassword");
 
         // Kiểm tra mật khẩu cũ
-        DAOTaiKhoan tkDAO = new DAOTaiKhoan();
-        if (!tkDAO.checkPassword(user.getTenTaiKhoan(), oldPassword)) {
+        if (!taiKhoanService.checkPassword(user.getTenTaiKhoan(), oldPassword)) {
             request.setAttribute("message", "Mật khẩu cũ không đúng.");
             request.getRequestDispatcher("/pages/changepassword.jsp").forward(request, response);
             return;
@@ -51,7 +57,7 @@ public class ChangePasswordServlet extends HttpServlet {
         }
 
         // Cập nhật mật khẩu mới
-        boolean isUpdated = tkDAO.updatePassword(user.getTenTaiKhoan(), newPassword);
+        boolean isUpdated = taiKhoanService.updatePassword(user.getTenTaiKhoan(), newPassword);
         if (isUpdated) {
             request.setAttribute("message", "Đổi mật khẩu thành công!");
         } else {

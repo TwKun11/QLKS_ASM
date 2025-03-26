@@ -270,7 +270,7 @@
                     <div class="hotel-info">
                         <h2>${khachSan.ten}</h2>
                         <img src="Content/Images/KhachSan/${khachSan.id}.jpg" alt="${khachSan.ten}">
-                        <p><i class="fas fa-map-marker-alt"></i> <strong>Địa chỉ:</strong> 79 Trần Cung, Quận Từ Liêm, Hà Nội</p>
+                        <p><i class="fas fa-map-marker-alt"></i> <strong>Địa chỉ:</strong> ${khachSan.diaChi}</p>
                         <p><i class="fas fa-phone"></i> <strong>Số điện thoại:</strong> 0366918587</p>
                         <p><i class="fas fa-ruler"></i> <strong>Cách trung tâm:</strong> ${khachSan.cachTrungTam != null ? khachSan.cachTrungTam : 5} km</p>
                         <p><i class="fas fa-utensils"></i> <strong>Bữa ăn:</strong> 

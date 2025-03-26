@@ -3,12 +3,34 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/QLKS_ASM/web/includes/header.jsp</file>
-            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/QLKS_ASM/src/java/chat/ChatWebSocket.java</file>
-            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/QLKS_ASM/web/jsp/phong/listPhong.jsp</file>
-            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/QLKS_ASM/web/pages/admin_chat.jsp</file>
-            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/QLKS_ASM/web/jsp/loaikhachsan/listLoaiKhachSan.jsp</file>
-            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/QLKS_ASM/src/java/constant/Iconstant.java</file>
+            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/QLKS_ASM/src/java/service/DatPhongService.java</file>
+            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/QLKS_ASM/src/java/controller/LoginServlet.java</file>
+            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/QLKS_ASM/src/java/controller/RegisterServlet.java</file>
+            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/QLKS_ASM/src/java/service/LoaiKhachSanService.java</file>
+            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/QLKS_ASM/src/java/controller/VerifyOTPServlet.java</file>
+            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/QLKS_ASM/src/java/controller/PaymentServlet.java</file>
+            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/QLKS_ASM/src/java/service/PhongService.java</file>
+            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/QLKS_ASM/src/java/controller/admin/AdminDatPhongServlet.java</file>
+            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/QLKS_ASM/src/java/service/KhachSanService.java</file>
+            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/QLKS_ASM/src/java/dao/DAOKhachSan.java</file>
+            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/QLKS_ASM/src/java/service/ThanhPhoService.java</file>
+            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/QLKS_ASM/src/java/service/TaiKhoanService.java</file>
+            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/QLKS_ASM/src/java/dao/DAOThanhPho.java</file>
+            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/QLKS_ASM/src/java/controller/ReturnPaymentServlet.java</file>
+            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/QLKS_ASM/src/java/controller/ChangePasswordServlet.java</file>
+            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/QLKS_ASM/src/java/controller/KhachSanServlet.java</file>
+            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/QLKS_ASM/src/java/controller/ResetPasswordServlet.java</file>
+            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/QLKS_ASM/src/java/controller/HuyDatPhongServlet.java</file>
+            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/QLKS_ASM/src/java/dao/DAOTaiKhoan.java</file>
+            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/QLKS_ASM/src/java/controller/LogoutServlet.java</file>
+            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/QLKS_ASM/src/java/controller/ProfileServlet.java</file>
+            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/QLKS_ASM/src/java/controller/DatPhongServlet.java</file>
+            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/QLKS_ASM/src/java/dao/DAODatPhong.java</file>
+            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/QLKS_ASM/src/java/dao/DAOLoaiKhachSan.java</file>
+            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/QLKS_ASM/src/java/controller/ForgotPasswordServlet.java</file>
+            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/QLKS_ASM/src/java/controller/HomePageServlet.java</file>
+            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/QLKS_ASM/src/java/dao/DAOPhong.java</file>
+            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/QLKS_ASM/src/java/controller/XacNhanDatPhong.java</file>
         </group>
     </open-files>
 </project-private>

@@ -4,8 +4,8 @@
  */
 package controller.admin;
 
-import dao.DAOKhachSan;
-import dao.DAOLoaiKhachSan;
+import service.LoaiKhachSanService;
+import service.KhachSanService;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -23,18 +23,18 @@ import model.LoaiKhachSan;
 @WebServlet(name = "AdminLoaiKhachSanServlet", urlPatterns = {"/loaikhachsans"})
 public class AdminLoaiKhachSanServlet extends HttpServlet {
 
-    private DAOLoaiKhachSan daoLoaiKhachSan;
-    private DAOKhachSan daoKhachSan; // Thêm DAO Khách Sạn để lấy số lượng
+    private LoaiKhachSanService loaiKhachSanService;
+    private KhachSanService khachSanService; // Thêm Service Khách Sạn để lấy số lượng
 
     @Override
     public void init() throws ServletException {
-        daoLoaiKhachSan = new DAOLoaiKhachSan();
-        daoKhachSan = new DAOKhachSan(); // Khởi tạo DAO Khách Sạn
+        loaiKhachSanService = new LoaiKhachSanService();
+        khachSanService = new KhachSanService(); // Khởi tạo Service Khách Sạn
     }
 
     private void listLoaiKhachSan(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<LoaiKhachSan> danhSach = daoLoaiKhachSan.getAll();
+        List<LoaiKhachSan> danhSach = loaiKhachSanService.getAll();
         request.setAttribute("loaikhachsans", danhSach);
         request.getRequestDispatcher("jsp/loaikhachsan/listLoaiKhachSan.jsp").forward(request, response);
     }
@@ -53,11 +53,11 @@ public class AdminLoaiKhachSanServlet extends HttpServlet {
         String urlHinhAnh = request.getParameter("urlHinhAnh");
 
         // Lấy số lượng khách sạn có loại này
-        int soKhachSan = daoKhachSan.countByLoaiKhachSan(ten);
+        int soKhachSan = khachSanService.countByLoaiKhachSan(ten);
 
         LoaiKhachSan lks = new LoaiKhachSan(0, ten, moTa, urlHinhAnh, soKhachSan);
         
-        boolean isInserted = daoLoaiKhachSan.insert(lks);
+        boolean isInserted = loaiKhachSanService.insert(lks);
         if (isInserted) {
             request.setAttribute("message", "Thêm thành công!");
         } else {
@@ -70,7 +70,7 @@ public class AdminLoaiKhachSanServlet extends HttpServlet {
     private void showUpdateForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
-        List<LoaiKhachSan> danhSach = daoLoaiKhachSan.getAll();
+        List<LoaiKhachSan> danhSach = loaiKhachSanService.getAll();
         LoaiKhachSan loaiKhachSan = danhSach.stream().filter(tp -> tp.getId() == id).findFirst().orElse(null);
         request.setAttribute("loaiKhachSan", loaiKhachSan);
         request.getRequestDispatcher("jsp/loaikhachsan/updateLoaiKhachSan.jsp").forward(request, response);
@@ -82,40 +82,40 @@ public class AdminLoaiKhachSanServlet extends HttpServlet {
         String ten = request.getParameter("ten");
         String moTa = request.getParameter("moTa");
         String urlHinhAnh = request.getParameter("urlHinhAnh");
-        int soKhachSan = daoKhachSan.countByLoaiKhachSan(ten);
+        int soKhachSan = khachSanService.countByLoaiKhachSan(ten);
         
         LoaiKhachSan lks = new LoaiKhachSan(id, ten, moTa, urlHinhAnh);
-        daoLoaiKhachSan.update(lks);
+        loaiKhachSanService.update(lks);
         response.sendRedirect("loaikhachsans?action=list");
     }
 
     private void deleteLoaiKhachSan(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
-        daoLoaiKhachSan.delete(id);
+        loaiKhachSanService.delete(id);
         response.sendRedirect("loaikhachsans?action=list");
     }
 
     private void searchLoaiKhachSan(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-    String keyword = request.getParameter("name");
+            throws ServletException, IOException {
+        String keyword = request.getParameter("name");
 
-    // Kiểm tra nếu từ khóa rỗng hoặc null, trả về danh sách đầy đủ
-    List<LoaiKhachSan> danhSach = daoLoaiKhachSan.getAll();
-    List<LoaiKhachSan> ketQuaTimKiem;
+        // Kiểm tra nếu từ khóa rỗng hoặc null, trả về danh sách đầy đủ
+        List<LoaiKhachSan> danhSach = loaiKhachSanService.getAll();
+        List<LoaiKhachSan> ketQuaTimKiem;
 
-    if (keyword == null || keyword.trim().isEmpty()) {
-        ketQuaTimKiem = danhSach; // Trả về toàn bộ danh sách nếu không có từ khóa
-    } else {
-        String keywordLower = keyword.toLowerCase().trim();
-        ketQuaTimKiem = danhSach.stream()
-                .filter(tp -> tp.getTen().toLowerCase().contains(keywordLower))
-                .toList();
+        if (keyword == null || keyword.trim().isEmpty()) {
+            ketQuaTimKiem = danhSach; // Trả về toàn bộ danh sách nếu không có từ khóa
+        } else {
+            String keywordLower = keyword.toLowerCase().trim();
+            ketQuaTimKiem = danhSach.stream()
+                    .filter(tp -> tp.getTen().toLowerCase().contains(keywordLower))
+                    .toList();
+        }
+
+        request.setAttribute("loaikhachsans", ketQuaTimKiem);
+        request.getRequestDispatcher("jsp/loaikhachsan/listLoaiKhachSan.jsp").forward(request, response);
     }
-
-    request.setAttribute("loaikhachsans", ketQuaTimKiem);
-    request.getRequestDispatcher("jsp/loaikhachsan/listLoaiKhachSan.jsp").forward(request, response);
-}
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>

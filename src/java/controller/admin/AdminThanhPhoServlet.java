@@ -1,10 +1,10 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ * Click nbfs://SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 package controller.admin;
 
-import dao.DAOThanhPho;
+import service.ThanhPhoService;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -26,11 +26,11 @@ import model.ThanhPho;
 @WebServlet(name = "AdminThanhPhoServlet", urlPatterns = {"/thanhphos"})
 public class AdminThanhPhoServlet extends HttpServlet {
 
-    private DAOThanhPho daoThanhPho;
+    private ThanhPhoService thanhPhoService;
 
     @Override
     public void init() throws ServletException {
-        daoThanhPho = new DAOThanhPho();
+        thanhPhoService = new ThanhPhoService();
     }
 
     /**
@@ -44,7 +44,7 @@ public class AdminThanhPhoServlet extends HttpServlet {
      */
     private void listThanhPho(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<ThanhPho> danhSach = daoThanhPho.getAll();
+        List<ThanhPho> danhSach = thanhPhoService.getAll();
         request.setAttribute("cities", danhSach);
         request.getRequestDispatcher("jsp/thanhpho/listThanhPho.jsp").forward(request, response);
     }
@@ -57,7 +57,7 @@ public class AdminThanhPhoServlet extends HttpServlet {
     private void showEditForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
-        List<ThanhPho> danhSach = daoThanhPho.getAll();
+        List<ThanhPho> danhSach = thanhPhoService.getAll();
         ThanhPho thanhPho = danhSach.stream().filter(tp -> tp.getId() == id).findFirst().orElse(null);
         request.setAttribute("thanhPho", thanhPho);
         request.getRequestDispatcher("jsp/thanhpho/updateThanhPho.jsp").forward(request, response);
@@ -69,7 +69,7 @@ public class AdminThanhPhoServlet extends HttpServlet {
         String moTa = request.getParameter("moTa");
         String urlHinhAnh = request.getParameter("urlHinhAnh");
         ThanhPho thanhPho = new ThanhPho(0, ten, moTa, urlHinhAnh);
-        daoThanhPho.insert(thanhPho);
+        thanhPhoService.insert(thanhPho);
         response.sendRedirect("thanhphos?action=list");
     }
 
@@ -80,21 +80,21 @@ public class AdminThanhPhoServlet extends HttpServlet {
         String moTa = request.getParameter("moTa");
         String urlHinhAnh = request.getParameter("urlHinhAnh");
         ThanhPho thanhPho = new ThanhPho(id, ten, moTa, urlHinhAnh, 0);
-        daoThanhPho.update(thanhPho);
+        thanhPhoService.update(thanhPho);
         response.sendRedirect("thanhphos?action=list");
     }
 
     private void deleteThanhPho(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         int id = Integer.parseInt(request.getParameter("id"));
-        daoThanhPho.delete(id);
+        thanhPhoService.delete(id);
         response.sendRedirect("thanhphos?action=list");
     }
 
     private void searchThanhPho(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String keyword = request.getParameter("name");
-        List<ThanhPho> danhSach = daoThanhPho.getAll();
+        List<ThanhPho> danhSach = thanhPhoService.getAll();
 
         // Lọc danh sách thành phố theo từ khóa
         List<ThanhPho> ketQuaTimKiem = danhSach.stream()

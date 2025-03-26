@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import model.LoaiKhachSan;
 
 public class DAOLoaiKhachSan implements ILoaiKhachSanDAO {
-    // Các hằng số query SQL
     private static final String SELECT_ALL_LOAI_KHACHSAN = 
             "select L.Id as A, L.Ten as B, L.MoTa as C, L.UrlHinhAnh as D, " +
             "count(L.Id) as E from LoaiKhachSan L left join KhachSan K " +

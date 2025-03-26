@@ -6,12 +6,23 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.io.IOException;
-import dao.DAOTaiKhoan;
+import service.TaiKhoanService;
 import model.TaiKhoan;
+
+import java.io.IOException;
 
 @WebServlet(name = "VerifyOTPServlet", urlPatterns = {"/verifyOTP"})
 public class VerifyOTPServlet extends HttpServlet {
+
+    private TaiKhoanService taiKhoanService;
+
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        taiKhoanService = new TaiKhoanService();
+    }
+
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
@@ -24,11 +35,9 @@ public class VerifyOTPServlet extends HttpServlet {
         String resetUsername = (String) session.getAttribute("resetUsername");
 
         if (enteredOTP != null && sessionOTP != null && enteredOTP.equals(sessionOTP)) {
-            DAOTaiKhoan dao = new DAOTaiKhoan();
-            
             if (pendingUser != null) { 
                 // Xử lý đăng ký tài khoản
-                dao.insert(pendingUser);
+                taiKhoanService.insert(pendingUser);
                 session.removeAttribute("pendingUser");
                 response.sendRedirect("pages/success.jsp");
             } else if (resetUsername != null) { 
